@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <title>Title</title>
+</head>
+<body>
+<input type="file" id="file-input" />
+<button id="upload-button">Upload File</button>
+<script>
+  $('#upload-button').on('click',function (){
+    var fd = new FormData();
+    var files = $('#file-input')[0].files;
+
+    // Check file selected or not
+    if(files.length > 0 ){
+      fd.append('file',files[0]);
+
+      $.ajax({
+        url: window.location.href + 'api/csv/upload',
+        type: 'post',
+        data: fd,
+        contentType: false,
+        processData: false,
+        success: function(response){
+
+        },
+      });
+    }else{
+      alert("Please select a file.");
+    }
+  })
+</script>
+</body>
+</html>
