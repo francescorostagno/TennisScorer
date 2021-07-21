@@ -36,6 +36,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<User>  register(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("email") String email){
+        if(userService.checkUsername(username)){
+            return userService.register(username,password,email);
+        }else{
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorHandler(Exception exc) {
         LOGGER.error(exc.getMessage(), exc);

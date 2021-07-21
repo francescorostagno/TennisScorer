@@ -29,12 +29,12 @@ public class UserService {
      * @param role - the user role
      */
     @Transactional
-    public void createUser(String username, String email, String password, int role) {
+    public void createUser(String username, String email, String password, String role) {
         if (!userRepository.isUsernameAvailable(username)) {
             throw new IllegalArgumentException("The username is not available.");
         }
-
-        User user = new User(username, MD5.getMd5(password), email, 0);
+        role = "USER";
+        User user = new User(username, MD5.getMd5(password), email, role );
 
         userRepository.save(user);
     }
@@ -47,6 +47,20 @@ public class UserService {
         User user = userRepository.authenticate(username,password);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
+
+    @Transactional(readOnly = false)
+    public ResponseEntity<User> register(String username,String password,String email){
+        User user = new User(username,password, email, "USER");
+        userRepository.save(user);
+        return new ResponseEntity<User>( user, HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkUsername(String username) {
+        return userRepository.isUsernameAvailable(username);
+    }
+
 
     @Transactional(readOnly = true)
     public User findUserByUsername(String username) {

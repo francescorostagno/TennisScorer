@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public class UserRepository {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -32,7 +33,7 @@ public class UserRepository {
     public User findUserByUsername(String username) {
 
         List<User> users = em.createNamedQuery(User.FIND_BY_USERNAME, User.class)
-                .setParameter("username", username)
+                .setParameter(1, username)
                 .getResultList();
 
         return users.size() == 1 ? users.get(0) : null;
@@ -59,7 +60,7 @@ public class UserRepository {
     public boolean isUsernameAvailable(String username) {
 
         List<User> users = em.createNamedQuery(User.FIND_BY_USERNAME, User.class)
-                .setParameter("username", username)
+                .setParameter(1, username)
                 .getResultList();
 
         return users.isEmpty();

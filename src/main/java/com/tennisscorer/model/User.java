@@ -2,6 +2,8 @@ package com.tennisscorer.model;
 import org.dom4j.tree.AbstractEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -9,7 +11,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(
                 name = User.FIND_BY_USERNAME,
-                query = "select u from User u where username = :username"
+                query = "select u from User u where username = ?1"
         ),
         @NamedQuery(
                 name = User.FIND_BY_USERNAME_AND_PASSWORD,
@@ -20,8 +22,9 @@ public class User  {
 
     public static final String FIND_BY_USERNAME = "User.findByUserName";
     public static final String FIND_BY_USERNAME_AND_PASSWORD = "User.findByUsernameAndPassword";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private int id;
 
@@ -35,7 +38,12 @@ public class User  {
     private String email;
 
     @Column(name = "`role`")
-    private int role;
+    private String role;
+
+
+    @Column(name = "enabled")
+    private Boolean enabled;
+
 
     public User() {
 
@@ -45,7 +53,7 @@ public class User  {
         return id;
     }
 
-    public User(String username, String password, String email, int role){
+    public User(String username, String password, String email, String role){
         this.username = username;
         this.password = password;
         this.email = email;
@@ -81,14 +89,21 @@ public class User  {
         this.email = email;
     }
 
-    public int getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
     @Override
     public String toString() {
         return "User{" +

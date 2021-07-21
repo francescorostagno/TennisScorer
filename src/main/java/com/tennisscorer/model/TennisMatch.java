@@ -8,14 +8,14 @@ import javax.persistence.*;
 public class TennisMatch {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id;
 
-    @Column(name = "`tourney_id`")
-    private String tourney_id;
+    @Column(name = "`tourney_id`" , unique = true)
+    private String tourneyId;
 
-    @Column(name = "`tourney_name`")
+    @Column(name = "`tourney_name`" )
     private String tourney_name;
 
     @Column(name = "`surface`")
@@ -31,7 +31,7 @@ public class TennisMatch {
     private String tourney_date;
 
     @Column(name = "`match_num`")
-    private int match_num;
+    private int matchNum;
 
     @Column(name = "`winner_id`")
     private long winner_id;
@@ -165,13 +165,13 @@ public class TennisMatch {
 
 
     public TennisMatch(String tourney_id, String tourneyName, String surface, long drawSize, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winner_name, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loser_name, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winnerRankPoints, int loser_rank, int loser_rank_points) {
-        this.tourney_id = tourney_id;
+        this.tourneyId = tourney_id;
         this.tourney_name = tourneyName;
         this.surface = surface;
         this.draw_size = drawSize;
         this.tourney_level = tourney_level;
         this.tourney_date = tourney_date;
-        this.match_num = matchNum;
+        this.matchNum = matchNum;
         this.winner_id = winner_id;
         this.winner_seed = winner_seed;
         this.winner_entry = winner_entry;
@@ -219,7 +219,7 @@ public class TennisMatch {
     public Long getId(){ return id; }
 
     public String getTourneyId() {
-        return tourney_id;
+        return tourneyId;
     }
 
     public String getTourney_name() {
@@ -243,7 +243,7 @@ public class TennisMatch {
     }
 
     public int getMatch_num() {
-        return match_num;
+        return matchNum;
     }
 
     public long getWinner_id() {
@@ -413,7 +413,7 @@ public class TennisMatch {
     public void setId(Long id){ this.id = id; }
 
     public void setTourneyId(String tourney_id) {
-        this.tourney_id = tourney_id;
+        this.tourneyId = tourney_id;
     }
 
     public void setTourney_name(String tourney_name) {
@@ -437,7 +437,7 @@ public class TennisMatch {
     }
 
     public void setMatch_num(int match_num) {
-        this.match_num = match_num;
+        this.matchNum = match_num;
     }
 
     public void setWinner_id(long winner_id) {

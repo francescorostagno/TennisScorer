@@ -16,6 +16,39 @@ tennisScorerApp.controller('BaseFormController', ['$scope', '$http','md5', funct
 
         };
 
+        $scope.onRegister = function () {
+            console.log('Attempting login with username ' + $scope.vm.username + ' and password ' + $scope.vm.password);
+
+            $scope.vm.submitted = true;
+
+            $scope.register();
+
+        };
+        $scope.register = function (){
+            var pdData = $scope.preparePostData()
+
+            $http({
+                method: 'POST',
+                url: '/user/register',
+                data: pdData,
+                contentType: false,
+                processData: false,
+                headers : {
+                    'Content-Type':  'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            }).then(function(response) {
+                    console.log(response)
+                    if (response.status == 200) {
+
+                        window.location.replace('/home.html');
+                    }
+                    else {
+                        $scope.vm.errorMessages = [];
+                        $scope.vm.errorMessages.push({description: 'Access denied'});
+                    }
+                });
+        }
+
         $scope.focus = function (fieldName) {
             fieldWithFocus = fieldName;
         };

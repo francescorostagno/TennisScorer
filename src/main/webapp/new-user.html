@@ -3,91 +3,44 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create User Calorie Tracker</title>
-    <link rel="stylesheet" href="/resources/bower_components/pure/pure.css">
-    <link rel="stylesheet" href="/resources/bower_components/pure/grids-responsive.css">
-    <link rel="stylesheet" href="/resources/public/css/pure-theme.css">
-    <link rel="stylesheet" href="/resources/public/css/calories-tracker.css">
+    <title>Tennis Scorer</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/pure/pure.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/pure/grids-responsive.css">
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/common.js"></script>
 </head>
-<body class="pure-skin-theme" id="createUserApp">
-
-<header class="page-header pure-g">
-    <div class="pure-u-lg-1-2 pure-u-1">
-        <a class="pure-menu-heading" href="#">
-            <img class="logo" src="/resources/img/logo.png">
-        </a>
-        <span class="header-element page-title">Calorie Tracker</span>
-    </div>
-</header>
-
-    <main ng-controller="BaseFormCtrl">
-
-        <tt-error-messages extra-styles="access-screen"></tt-error-messages>
-
-        <div class="login-container">
-
-            <form name="form" ng-submit="createUser()" class="pure-form login-form" novalidate ng-controller="NewUserCtrl">
-                <fieldset class="pure-group">
-                    <legend>New User?</legend>
-                    <div class="form-field">
-                        <input type="text" ng-focus="focus('username')" ng-blur="blur('username')" ng-model="vm.username"
-                               name="username" class="pure-input-1" placeholder="Username" required ng-minlength="6">
-
-                        <div class="error-messages" ng-show="isMessagesVisible('username')" ng-messages="form.username.$error"
-                             ng-cloak>
-                            <div ng-message="required">The username is mandatory</div>
-                            <div ng-message="minlength">must have minimum 6 characters</div>
+<body  ng-app="tennisScorerApp" ng-controller="BaseFormController">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Sign In</h5>
+                    <form class="form-signin"  ng-submit="register()" >
+                        <div class="form-label-group">
+                            <input type="text" ng-model="vm.username" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+                            <label for="username">Username</label>
                         </div>
-                    </div>
-                    <div class="form-field">
-                        <input type="email" ng-focus="focus('email')" ng-blur="blur('email')" ng-model="vm.email"
-                               name="email" class="pure-input-1" placeholder="Email" required>
-
-                        <div class="error-messages" ng-show="isMessagesVisible('email')" ng-messages="form.email.$error"
-                             ng-cloak>
-                            <div ng-message="required">The email is mandatory</div>
-                            <div ng-message="email">must be a valid email</div>
+                        <div class="form-label-group">
+                            <input type="text" ng-model="vm.email" id="email" name="username" class="form-control" placeholder="email" required autofocus>
+                            <label for="email">Email address</label>
                         </div>
-                    </div>
-                    <div class="form-field">
-                        <input type="password" ng-focus="focus('password')" ng-blur="blur('password')"
-                               ng-model="vm.password" name="password" class="pure-input-1" placeholder="Password"
-                               required ng-minlength="6" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
-
-                        <div class="error-messages" ng-show="isMessagesVisible('password')" ng-messages="form.password.$error"
-                             ng-cloak>
-                            <div ng-message="required">The password is mandatory</div>
-                            <div ng-message="minlength">must have minimum 6 characters</div>
-                            <div ng-message="pattern">At least one number and uppercase</div>
+                        <div class="form-label-group">
+                            <input type="password" ng-model="vm.password" id="password" class="form-control" placeholder="Password" required>
+                            <label for="password">Password</label>
                         </div>
-                    </div>
-                    <div class="last-form-field">
-                        <input type="password" ng-focus="focus('confirmPassword')" ng-blur="blur('confirmPassword')"
-                               ng-model="vm.confirmPassword" name="confirmPassword" class="pure-input-1"
-                               placeholder="Confirm Password" required ng-minlength="6"
-                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" check-passwords-match>
 
-                        <div class="error-messages" ng-show="isMessagesVisible('confirmPassword')"
-                             ng-messages="form.confirmPassword.$error" ng-cloak>
-                            <div ng-message="required">The password is mandatory</div>
-                            <div ng-message="minlength">must have minimum 6 characters</div>
-                            <div ng-message="pattern">At least one number and uppercase</div>
-                            <div ng-message="checkPasswordsMatch">Passwords must match</div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <button type="submit" class="pure-button pure-input-1 pure-button-primary">Create User</button>
-                <a class="new-user-link" href="login.html">Already a user?</a>
-
-            </form>
-
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </main>
-
-<script type="text/javascript" data-main="/resources/public/js/run-create-user-app"
-        src="/resources/bower_components/requirejs/require.js"></script>
-
-
+    </div>
+</div>
 </body>
 </html>

@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.tennisscorer.model.Player;
+import com.tennisscorer.model.Tourney;
+import com.tennisscorer.repository.PlayerRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.QuoteMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tennisscorer.model.TennisMatch;
 
 public class CSVHelper {
+
 
     public static String TYPE = "text/csv";
     static String[] HEADERs = { "tourney_id", "tourney_name", "surface", "draw_size",
@@ -96,12 +101,68 @@ public class CSVHelper {
                         Integer.parseInt(!csvRecord.get("loser_rank_points").equals("") ? csvRecord.get("loser_rank_points"): "0")
                 );
                 tennisMatches.add(tennisMatch);
+
+
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return tennisMatches;
+    }
+
+    public static List<Player> csvToPlayer(InputStream is) {
+        List<Player> players = new ArrayList<Player>();
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());){
+
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            for (CSVRecord csvRecord : csvRecords) {
+
+                Player playerWin = new Player(
+                        csvRecord.get("winner_name")
+                );
+                players.add(playerWin);
+                Player playerLoss = new Player(
+                        csvRecord.get("loser_name")
+                );
+                players.add(playerLoss);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return players;
+    }
+
+    public static List<Tourney> csvToTourney(InputStream is){
+        List<Tourney> tourneys = new ArrayList<Tourney>();
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());){
+
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            for (CSVRecord csvRecord : csvRecords) {
+                Tourney tourney = new Tourney(
+                        csvRecord.get("tourney_id"),
+                        csvRecord.get("tourney_name"),
+                        csvRecord.get("tourney_date"),
+                        Long.parseLong(!csvRecord.get("draw_size").equals("")? csvRecord.get("draw_size") : "0"),
+                        csvRecord.get("tourney_level"),
+                        csvRecord.get("surface")
+                );
+                tourneys.add(tourney);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tourneys;
+
     }
 
     public static ByteArrayInputStream tennisMatchToCsv(List<TennisMatch> tennisMatches){
