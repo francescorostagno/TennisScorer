@@ -41,9 +41,7 @@ public class UserService {
 
 
     public ResponseEntity<User> authenticate(String username,String password){
-        if (userRepository.authenticate(username,password) == null) {
-            throw new IllegalArgumentException("The username is not available.");
-        }
+
         User user = userRepository.authenticate(username,password);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

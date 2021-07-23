@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface PlayerRepository extends CrudRepository<Player,Long>{
     Boolean existsPlayerByPlayerName(String player_name);
-
+    Player findByPlayerId(Long player_id);
+    Player findByPlayerName(String player_name);
 }

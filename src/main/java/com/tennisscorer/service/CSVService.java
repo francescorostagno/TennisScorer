@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.tennisscorer.model.Player;
+import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Tourney;
 import com.tennisscorer.repository.TennisRepository;
 import com.tennisscorer.helper.CSVHelper;
@@ -26,6 +27,8 @@ public class CSVService {
     com.tennisscorer.repository.PlayerRepository playerRepository;
     @Autowired
     com.tennisscorer.repository.TourneyRepository tourneyRepository;
+    @Autowired
+    com.tennisscorer.repository.RankingRepository rankingRepository;
 
 
     public void save(MultipartFile file){
@@ -36,18 +39,44 @@ public class CSVService {
                     repository.save(tennisMatches.get(i));
                 }
             }
-            List<Player> players = CSVHelper.csvToPlayer(file.getInputStream());
+
             List<Tourney> tourneys = CSVHelper.csvToTourney(file.getInputStream());
 
+            for(int i = 0; i < tourneys.size(); i ++){
+                if(!tourneyRepository.existsTourneyByTourneyId(tourneys.get(i).getTourney_id()) &&
+                    tourneys.get(i).getDraw_size() == (tourneys.get(i).getMatch_num() + 1)  ){
+                    tourneyRepository.save(tourneys.get(i));
+                }
+            }
+
+        }catch (IOException e) {
+            throw new RuntimeException("fail to store csv data: " + e.getMessage());
+        }
+    }
+
+    public void savePlayers(MultipartFile file){
+        try {
+
+            List<Player> players = CSVHelper.csvToPlayer(file.getInputStream());
             for (int i = 0; i < players.size() ; i++ ) {
                 if(!playerRepository.existsPlayerByPlayerName(players.get(i).getPlayer_name())){
                     playerRepository.save(players.get(i));
                 }
             }
 
-            for(int i = 0; i < tourneys.size(); i ++){
-                if(!tourneyRepository.existsTourneyByTourneyId(tourneys.get(i).getTourney_id())){
-                    tourneyRepository.save(tourneys.get(i));
+        }catch (IOException e) {
+            throw new RuntimeException("fail to store csv data: " + e.getMessage());
+        }
+    }
+
+    public void saveRanking(MultipartFile file){
+        try {
+
+            List<Ranking> rankings = CSVHelper.csvToRanking(file.getInputStream());
+            for (int i = 0; i < rankings.size() ; i++ ) {
+                if(!rankingRepository.existsByPlayerIdAndRankingDate(rankings.get(i).getPlayer_id(),rankings.get(i).getRankingDate())
+                        && rankings.get(i).getRank() <= 100 ){
+                    rankingRepository.save(rankings.get(i));
                 }
             }
 

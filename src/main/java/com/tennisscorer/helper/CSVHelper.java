@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tennisscorer.model.Player;
+import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Tourney;
 import com.tennisscorer.repository.PlayerRepository;
 import org.apache.commons.csv.CSVFormat;
@@ -121,14 +122,15 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords) {
 
-                Player playerWin = new Player(
-                        csvRecord.get("winner_name")
+                Player player = new Player(
+                        Long.parseLong(!csvRecord.get("player_id").equals("") ? csvRecord.get("player_id") : "0"),
+                        csvRecord.get("first_name") +" " + csvRecord.get("last_name"),
+                        csvRecord.get("hand"),
+                        csvRecord.get("birth_date"),
+                        csvRecord.get("country_code")
                 );
-                players.add(playerWin);
-                Player playerLoss = new Player(
-                        csvRecord.get("loser_name")
-                );
-                players.add(playerLoss);
+
+                players.add(player);
 
             }
 
@@ -153,7 +155,10 @@ public class CSVHelper {
                         csvRecord.get("tourney_date"),
                         Long.parseLong(!csvRecord.get("draw_size").equals("")? csvRecord.get("draw_size") : "0"),
                         csvRecord.get("tourney_level"),
-                        csvRecord.get("surface")
+                        csvRecord.get("surface"),
+                        csvRecord.get("winner_name"),
+                        csvRecord.get("loser_name"),
+                        Long.parseLong(!csvRecord.get("match_num").equals("")? csvRecord.get("match_num") : "0")
                 );
                 tourneys.add(tourney);
             }
@@ -162,6 +167,31 @@ public class CSVHelper {
             e.printStackTrace();
         }
         return tourneys;
+
+    }
+
+    public static List<Ranking> csvToRanking(InputStream is){
+        List<Ranking> rankings = new ArrayList<Ranking>();
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());){
+
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            for (CSVRecord csvRecord : csvRecords) {
+                Ranking ranking = new Ranking(
+                        csvRecord.get("ranking_date"),
+                        Long.parseLong(!csvRecord.get("rank").equals("")? csvRecord.get("rank") : "0"),
+                        Long.parseLong(!csvRecord.get("player").equals("")? csvRecord.get("player") : "0"),
+                        Long.parseLong(!csvRecord.get("points").equals("")? csvRecord.get("points") : "0")
+                );
+                rankings.add(ranking);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rankings;
 
     }
 

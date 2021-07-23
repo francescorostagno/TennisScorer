@@ -9,4 +9,5 @@
     <bean id="UserRepository" class="com.tennisscorer.repository.UserRepository" abstract="true"/>
     <bean id="PlayerRepository" class="com.tennisscorer.repository.PlayerRepository" abstract="true"/>
     <bean id="TourneyRepository" class="com.tennisscorer.repository.TourneyRepository" abstract="true"/>
+    <bean id="RankingRepository" class="com.tennisscorer.repository.RankingRepository" abstract="true"/>
 </beans>

@@ -28,6 +28,18 @@ public class Tourney {
     @Column(name = "`surface`")
     private String surface;
 
+    @Column(name = "`winner_name`")
+    private String winnerName;
+
+    @Column(name = "`loser_name`")
+    private String loserName;
+
+    @Column(name = "`match_num`")
+    private Long match_num;
+
+
+
+
     public Tourney(){
 
     }
@@ -88,12 +100,39 @@ public class Tourney {
         this.surface = surface;
     }
 
-    public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface){
+    public Long getMatch_num() {
+        return match_num;
+    }
+
+    public void setMatch_num(Long match_num) {
+        this.match_num = match_num;
+    }
+
+    public String getWinnerName() {
+        return winnerName;
+    }
+
+    public void setWinnerName(String winnerName) {
+        this.winnerName = winnerName;
+    }
+
+    public String getLoserName() {
+        return loserName;
+    }
+
+    public void setLoserName(String loserName) {
+        this.loserName = loserName;
+    }
+
+    public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface,String winnerName,String loserName,Long match_num){
         this.tourneyId = tourney_id;
         this.tourney_name = tourney_name;
         this.tourney_date = tourney_date;
         this.draw_size = draw_size;
         this.level = level;
         this.surface = surface;
+        this.winnerName = winnerName;
+        this.loserName = loserName;
+        this.match_num = match_num;
     }
 }

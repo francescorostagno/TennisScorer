@@ -12,7 +12,7 @@ import java.security.Principal;
 
 @CrossOrigin("http://localhost:8081")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/login")
 public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
