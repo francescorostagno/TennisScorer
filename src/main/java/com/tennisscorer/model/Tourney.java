@@ -31,6 +31,15 @@ public class Tourney {
     @Column(name = "`winner_name`")
     private String winnerName;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "`winner_name`", referencedColumnName = "`player_name`", nullable = false, insertable = false, updatable = false)
+    private Player winnerPlayer;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "`loser_name`", referencedColumnName = "`player_name`", nullable = false, insertable = false, updatable = false)
+    private Player loserPlayer;
+
+
     @Column(name = "`loser_name`")
     private String loserName;
 
@@ -122,7 +131,23 @@ public class Tourney {
         this.loserName = loserName;
     }
 
-    public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface,String winnerName,String loserName,Long match_num){
+    public Player getWinnerPlayer() {
+        return winnerPlayer;
+    }
+
+    public void setWinnerPlayer(Player winnerPlayer) {
+        this.winnerPlayer = winnerPlayer;
+    }
+
+    public Player getLoserPlayer() {
+        return loserPlayer;
+    }
+
+    public void setLoserPlayer(Player loserPlayer) {
+        this.loserPlayer = loserPlayer;
+    }
+
+    public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface, String winnerName, String loserName, Long match_num){
         this.tourneyId = tourney_id;
         this.tourneyName = tourney_name;
         this.tourney_date = tourney_date;

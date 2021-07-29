@@ -159,10 +159,19 @@ public class TennisMatch {
     @Column(name = "`loser_rank_points`")
     private int loser_rank_points;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "`winner_name`", referencedColumnName = "`player_name`", nullable = false, insertable = false, updatable = false)
+    private Player winnerPlayer;
+
+
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "`loser_name`", referencedColumnName = "`player_name`", nullable = false, insertable = false, updatable = false)
+    private Player loserPlayer;
+
     public TennisMatch() {
 
     }
-
 
     public TennisMatch(String tourney_id, String tourneyName, String surface, long drawSize, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winnerRankPoints, int loser_rank, int loser_rank_points) {
         this.tourneyId = tourney_id;
@@ -215,6 +224,24 @@ public class TennisMatch {
         this.loser_rank = loser_rank;
         this.loser_rank_points = loser_rank_points;
     }
+
+    public Player getWinnerPlayer() {
+        return winnerPlayer;
+    }
+
+    public void setWinnerPlayer(Player winnerPlayer) {
+        this.winnerPlayer = winnerPlayer;
+    }
+
+    public Player getLoserPlayer() {
+        return loserPlayer;
+    }
+
+    public void setLoserPlayer(Player loserPlayer) {
+        this.loserPlayer = loserPlayer;
+    }
+
+
 
     public Long getId(){ return id; }
 

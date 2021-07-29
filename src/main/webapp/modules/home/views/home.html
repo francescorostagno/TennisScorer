@@ -1,3 +1,54 @@
 <h1>Home</h1>
 <p>You're logged in!!</p>
 <p><a href="#/login">Logout</a></a></p>
+<p>{{ username }}</p>
+<p>{{ enabled }}</p>
+<p>{{ role }}</p>
+
+<div ng-controller = "HomeController" ng-hide="role == 'user'">
+    <input type = "file" file-model = "myFile"/>
+    <button ng-click = "uploadFile()">upload me</button>
+</div>
+<form ng-submit="submitPlayer()" >
+    <label for="playerName" >Player Name: </label><br />
+    <input type="text" id="playerName" ng-model="playerName" /> <br />
+</form>
+
+<div  ng-controller="HomeController" class="tab-content clearfix">
+    <table id='playerTable' ng-show="hand !== null">
+        <tr>
+            <td>{{playerName}}</td>
+            <td>{{hand}}</td>
+            <td>{{birthDate}}</td>
+            <td>{{countryCode}}</td>
+        </tr>
+    </table>
+</div>
+
+<form ng-submit="submitTourney()" >
+    <label for="tourneyName" >Tourney Name: </label><br />
+    <input type="text" id="tourneyName" ng-model="tourneyName" /> <br />
+</form>
+
+<div ng-controller="HomeController" class="tab-content clearfix">
+    <table ng-show="tourney.length > 0">
+        <tbody ng-repeat=" t in tourney">
+            <tr>
+                <td>Winner Name: </td>
+                <td>{{ t.winnerName}}</td>
+            </tr>
+            <tr>
+                <td>Loser Name: </td>
+                <td>
+                    {{ t.loserName}}
+                </td>
+            </tr>
+            <tr>
+                <td>Tourney Date: </td>
+                <td>
+                    {{ t.tourneyDate}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

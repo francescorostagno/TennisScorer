@@ -28,12 +28,7 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<User>  authenticate(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("email") String email){
-        if(userService.authenticate(username,password) != null){
-
-            return userService.authenticate(username,password);
-        }else{
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return userService.authenticate(username,password);
     }
 
     @PostMapping("/register")

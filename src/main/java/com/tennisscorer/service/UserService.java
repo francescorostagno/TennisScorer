@@ -41,9 +41,12 @@ public class UserService {
 
 
     public ResponseEntity<User> authenticate(String username,String password){
-
         User user = userRepository.authenticate(username,password);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        if( user != null){
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

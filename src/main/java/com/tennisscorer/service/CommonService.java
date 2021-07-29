@@ -126,6 +126,10 @@ public class CommonService {
             return goldenRegisters;
     }
 
+    public List<String> autocompletePlayer(String term){
+        return playerRepository.getPlayerTerm(term);
+    }
+
 
     public List<Tourney> getAllTourney(){
         return (List<Tourney>) tourneyRepository.findAll();

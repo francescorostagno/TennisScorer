@@ -21,7 +21,6 @@ angular.module('Authentication')
             })
                 .then(
                 function(response) {
-                    window.alert('success')
                     callback(response)
                 },
                 function(response){
@@ -30,13 +29,15 @@ angular.module('Authentication')
 
         };
  
-        service.SetCredentials = function (username, password) {
+        service.SetCredentials = function (username, password,role,enabled) {
             var authdata = Base64.encode(username + ':' + password);
  
             $rootScope.globals = {
                 currentUser: {
                     username: username,
-                    authdata: authdata
+                    authdata: authdata,
+                    enabled: enabled,
+                    role: role
                 }
             };
  

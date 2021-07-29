@@ -26,7 +26,7 @@ public class CommonController {
     @Autowired
     CommonService commonService;
 
-    @GetMapping("/all_tourney")
+    @PostMapping("/all_tourney")
     public ResponseEntity<List<Tourney>> getTourneyTennisMatch(){
         try {
             List<Tourney> tourneys = commonService.getAllTourney();
@@ -40,7 +40,7 @@ public class CommonController {
     }
 
 
-    @GetMapping("/tourney_match")
+    @PostMapping("/tourney_match")
     public ResponseEntity<List<TennisMatch>> getTourneyTennisMatch(@RequestParam("tourney_id") String tourney_id){
         try {
             List<TennisMatch> tennisMatches = commonService.getTourneyTennisMatch(tourney_id);
@@ -53,7 +53,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/match_statistics")
+    @PostMapping("/match_statistics")
     public ResponseEntity<MatchStatistics> getMatchStatistics(@RequestParam("tourney_id") String tourney_id, @RequestParam("match_num") Integer match_num){
         try {
             MatchStatistics matchStatistics = commonService.getMatchStatistics(tourney_id,match_num );
@@ -66,7 +66,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/player_ranking")
+    @PostMapping("/player_ranking")
     public ResponseEntity<List<Ranking>> getPlayerRanking(@RequestParam("player_name") String player_name){
         try {
             List<Ranking> rankings = commonService.getPlayerRanking(player_name);
@@ -79,7 +79,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/player_match")
+    @PostMapping("/player_match")
     public ResponseEntity<List<PlayerMatch>> getPlayerMatch(@RequestParam("player_name") String player_name){
         try {
             List<PlayerMatch> playerMatches = commonService.getPlayerMatch(player_name);
@@ -105,7 +105,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/tourney")
+    @PostMapping("/tourney")
     public ResponseEntity<List<Tourney>> getTourneyByName(@RequestParam("tourney_name") String tourney_name){
         try {
             List<Tourney> tourneys = commonService.getTourneyByName(tourney_name);
@@ -120,7 +120,7 @@ public class CommonController {
 
 
 
-    @GetMapping("/player")
+    @PostMapping("/player")
     public ResponseEntity<Player> getPlayerByName(@RequestParam("player_name") String player_name){
         try {
             Player player = commonService.getPlayerByName(player_name);
@@ -129,6 +129,16 @@ public class CommonController {
             }
             return new ResponseEntity<>(player, HttpStatus.OK);
         }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/autocomplete_player")
+    public ResponseEntity<List<String>> autocompletePlayer(@RequestParam("term") String term){
+        try{
+            List<String> terms = commonService.autocompletePlayer(term);
+            return new ResponseEntity<>(terms, HttpStatus.OK);
+        }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
