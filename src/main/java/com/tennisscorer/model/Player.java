@@ -1,6 +1,10 @@
 package com.tennisscorer.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "`player`")
@@ -10,20 +14,50 @@ import javax.persistence.*;
                 query = "select p from Player p where player_name = ?1"
         )
 })
-public class Player {
+public class Player implements Serializable {
 
     public static final String FIND_BY_NAME = "Player.findByName";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id`")
-    private Long id;
-
     @Column(name =  "`player_id`")
     private Long playerId;
 
     @Column(name =  "`player_name`")
     private String playerName;
+
+    @Column(name =  "`hand`")
+    private String hand;
+
+
+    @Column(name =  "`birth_date`")
+    private String birth_date;
+
+    @Column(name =  "`country_code`")
+    private String country_code;
+
+    public List<Ranking> getRankings() {
+        return rankings;
+    }
+
+    public void setRankings(List<Ranking> rankings) {
+        this.rankings = rankings;
+    }
+
+    @OneToMany( fetch = FetchType.EAGER)
+    @JoinColumn( name = "`player_id`", referencedColumnName = "`player_id`", nullable = false, insertable = false, updatable = false)
+    private List<Ranking> rankings;
+
+    public Player( Long playerId, String player_name, String hand, String birth_date, String country_code){
+        this.playerId = playerId;
+        this.playerName = player_name;
+        this.hand = hand;
+        this.birth_date = birth_date;
+        this.country_code = country_code;
+    }
+
+    public Player() {
+
+    }
 
     public String getPlayerName() {
         return playerName;
@@ -65,44 +99,4 @@ public class Player {
         this.country_code = country_code;
     }
 
-    @Column(name =  "`hand`")
-    private String hand;
-
-    @Column(name =  "`birth_date`")
-    private String birth_date;
-
-    @Column(name =  "`country_code`")
-    private String country_code;
-
-    public Player (String player_name){
-        this.playerName = player_name;
-    }
-
-    public Player( Long playerId, String player_name, String hand, String birth_date, String country_code){
-        this.playerId = playerId;
-        this.playerName = player_name;
-        this.hand = hand;
-        this.birth_date = birth_date;
-        this.country_code = country_code;
-    }
-
-    public Player() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPlayer_name() {
-        return playerName;
-    }
-
-    public void setPlayer_name(String player_name) {
-        this.playerName = player_name;
-    }
 }

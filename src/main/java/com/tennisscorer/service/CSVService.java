@@ -59,7 +59,7 @@ public class CSVService {
 
             List<Player> players = CSVHelper.csvToPlayer(file.getInputStream());
             for (int i = 0; i < players.size() ; i++ ) {
-                if(!playerRepository.existsPlayerByPlayerName(players.get(i).getPlayer_name())){
+                if(!playerRepository.existsPlayerByPlayerName(players.get(i).getPlayerName())){
                     playerRepository.save(players.get(i));
                 }
             }
@@ -75,7 +75,7 @@ public class CSVService {
             List<Ranking> rankings = CSVHelper.csvToRanking(file.getInputStream());
             for (int i = 0; i < rankings.size() ; i++ ) {
                 if(!rankingRepository.existsByPlayerIdAndRankingDate(rankings.get(i).getPlayer_id(),rankings.get(i).getRankingDate())
-                        && rankings.get(i).getRank() <= 100 ){
+                        && rankings.get(i).getRank() <= 50 ){
                     rankingRepository.save(rankings.get(i));
                 }
             }

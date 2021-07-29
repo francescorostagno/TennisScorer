@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EnableJpaRepositories( basePackageClasses = TennisRepository.class )
 public class TennisScorerApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

@@ -43,7 +43,7 @@ public class TennisMatch {
     private String winner_entry;
 
     @Column(name = "`winner_name`")
-    private String winner_name;
+    private String winnerName;
 
     @Column(name = "`winner_hand`")
     private String winner_hand;
@@ -67,7 +67,7 @@ public class TennisMatch {
     private String loser_entry;
 
     @Column(name = "`loser_name`")
-    private String loser_name;
+    private String loserName;
 
     @Column(name = "`loser_hand`")
     private String loser_hand;
@@ -164,7 +164,7 @@ public class TennisMatch {
     }
 
 
-    public TennisMatch(String tourney_id, String tourneyName, String surface, long drawSize, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winner_name, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loser_name, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winnerRankPoints, int loser_rank, int loser_rank_points) {
+    public TennisMatch(String tourney_id, String tourneyName, String surface, long drawSize, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winnerRankPoints, int loser_rank, int loser_rank_points) {
         this.tourneyId = tourney_id;
         this.tourney_name = tourneyName;
         this.surface = surface;
@@ -175,7 +175,7 @@ public class TennisMatch {
         this.winner_id = winner_id;
         this.winner_seed = winner_seed;
         this.winner_entry = winner_entry;
-        this.winner_name = winner_name;
+        this.winnerName = winnerName;
         this.winner_hand = winner_hand;
         this.winner_ht = winner_ht;
         this.winner_ioc = winner_ioc;
@@ -183,7 +183,7 @@ public class TennisMatch {
         this.loser_id = loser_id;
         this.loser_seed = loser_seed;
         this.loser_entry = loser_entry;
-        this.loser_name = loser_name;
+        this.loserName = loserName;
         this.loser_hand = loser_hand;
         this.loser_ioc = loser_ioc;
         this.loser_ht = loser_ht;
@@ -254,8 +254,8 @@ public class TennisMatch {
         return winner_entry;
     }
 
-    public String getWinner_name() {
-        return winner_name;
+    public String getWinnerName() {
+        return winnerName;
     }
 
     public String getWinner_hand() {
@@ -286,8 +286,8 @@ public class TennisMatch {
         return loser_entry;
     }
 
-    public String getLoser_name() {
-        return loser_name;
+    public String getLoserName() {
+        return loserName;
     }
 
     public String getLoser_hand() {
@@ -448,8 +448,8 @@ public class TennisMatch {
         this.winner_entry = winner_entry;
     }
 
-    public void setWinner_name(String winner_name) {
-        this.winner_name = winner_name;
+    public void setWinnerName(String winner_name) {
+        this.winnerName = winner_name;
     }
 
     public void setWinner_hand(String winner_hand) {
@@ -480,8 +480,8 @@ public class TennisMatch {
         this.loser_entry = loser_entry;
     }
 
-    public void setLoser_name(String loser_name) {
-        this.loser_name = loser_name;
+    public void setLoserName(String loser_name) {
+        this.loserName = loser_name;
     }
 
     public void setLoser_hand(String loser_hand) {

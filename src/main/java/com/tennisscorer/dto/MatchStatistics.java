@@ -1,4 +1,4 @@
-package com.tennisscorer.model;
+package com.tennisscorer.dto;
 
 public class MatchStatistics {
 

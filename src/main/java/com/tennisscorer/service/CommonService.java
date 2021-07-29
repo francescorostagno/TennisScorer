@@ -1,17 +1,16 @@
 package com.tennisscorer.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.tennisscorer.dto.GoldenRegister;
+import com.tennisscorer.dto.MatchStatistics;
+import com.tennisscorer.dto.PlayerMatch;
 import com.tennisscorer.model.*;
-import com.tennisscorer.repository.TennisRepository;
-import com.tennisscorer.helper.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Configurable
 @Service
@@ -29,6 +28,14 @@ public class CommonService {
 
     public List<TennisMatch> getTourneyTennisMatch(String tourney_id){
        return repository.findAllByTourneyId(tourney_id);
+    }
+
+    public List<Tourney> getTourneyByName(String tourney_name){
+        return tourneyRepository.findAllByTourneyName(tourney_name);
+    }
+
+    public Player getPlayerByName(String player_name){
+        return  playerRepository.findByPlayerName(player_name);
     }
 
     public MatchStatistics getMatchStatistics(String tourney_id, Integer match_num){
@@ -59,15 +66,66 @@ public class CommonService {
                 );
     }
 
-    public List<Ranking> getPlayerRanking(String player_name){
+    public List<Ranking> getPlayerRanking(String player_name) {
         Player player = playerRepository.findByPlayerName(player_name);
-        List<Ranking>  ranking = null;
-        if(player != null){
+        List<Ranking> ranking = null;
+        if (player != null) {
             ranking = rankingRepository.findAllByPlayerId(player.getPlayerId());
 
         }
         return ranking;
     }
+
+    public List<PlayerMatch> getPlayerMatch(String player_name){
+        List<TennisMatch> tennisMatchesWinner = repository.findAllByWinnerName(player_name);
+        List<PlayerMatch> allPlayerMatch = new ArrayList<>();
+        if(tennisMatchesWinner != null){
+            for( int i = 0; i < tennisMatchesWinner.size(); i ++){
+                PlayerMatch playerMatch = new PlayerMatch(
+                        tennisMatchesWinner.get(i).getTourney_name(),
+                        tennisMatchesWinner.get(i).getScore(),
+                        tennisMatchesWinner.get(i).getLoserName(),
+                        1
+                );
+                allPlayerMatch.add(playerMatch);
+            }
+        }
+        List<TennisMatch> tennisMatchesLoser = repository.findAllByLoserName(player_name);
+        if(tennisMatchesLoser != null){
+            for(int i = 0; i < tennisMatchesLoser.size(); i ++){
+                PlayerMatch playerMatch = new PlayerMatch(
+                        tennisMatchesLoser.get(i).getTourney_name(),
+                        tennisMatchesLoser.get(i).getScore(),
+                        tennisMatchesLoser.get(i).getWinnerName(),
+                        0
+                );
+
+                allPlayerMatch.add(playerMatch);
+            }
+        }
+
+        return allPlayerMatch;
+    }
+
+    public List<GoldenRegister> getTourneyGoldenRegister(String tourney_name){
+            List<Tourney> tourneys = tourneyRepository.findAllByTourneyName(tourney_name);
+            List<GoldenRegister> goldenRegisters = new ArrayList<>();
+            if(!tourneys.isEmpty()){
+                for(int i = 0; i < tourneys.size(); i++){
+                    GoldenRegister goldenResister = new GoldenRegister(
+                            tourney_name,
+                            tourneys.get(i).getSurface(),
+                            tourneys.get(i).getTourney_date(),
+                            tourneys.get(i).getWinnerName(),
+                            tourneys.get(i).getLoserName()
+                    );
+                    goldenRegisters.add(goldenResister);
+                }
+            }
+
+            return goldenRegisters;
+    }
+
 
     public List<Tourney> getAllTourney(){
         return (List<Tourney>) tourneyRepository.findAll();

@@ -14,7 +14,7 @@ public class Tourney {
     private String tourneyId;
 
     @Column(name = "`tourney_name`")
-    private String tourney_name;
+    private String tourneyName;
 
     @Column(name = "`tourney_date`")
     private String tourney_date;
@@ -38,8 +38,6 @@ public class Tourney {
     private Long match_num;
 
 
-
-
     public Tourney(){
 
     }
@@ -60,12 +58,12 @@ public class Tourney {
         this.tourneyId = tourney_id;
     }
 
-    public String getTourney_name() {
-        return tourney_name;
+    public String getTourneyName() {
+        return tourneyName;
     }
 
-    public void setTourney_name(String tourney_name) {
-        this.tourney_name = tourney_name;
+    public void setTourneyName(String tourney_name) {
+        this.tourneyName = tourney_name;
     }
 
     public String getTourney_date() {
@@ -126,7 +124,7 @@ public class Tourney {
 
     public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface,String winnerName,String loserName,Long match_num){
         this.tourneyId = tourney_id;
-        this.tourney_name = tourney_name;
+        this.tourneyName = tourney_name;
         this.tourney_date = tourney_date;
         this.draw_size = draw_size;
         this.level = level;

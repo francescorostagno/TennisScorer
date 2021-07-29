@@ -1,10 +1,11 @@
 package com.tennisscorer.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "`ranking`")
-public class Ranking {
+public class Ranking implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +18,12 @@ public class Ranking {
     @Column(name = "`rank`")
     private Long rank;
 
-    @Column(name = "`player_id`")
+    @Column(name = "`player_id`", insertable = false, updatable = false ,nullable = false)
     private Long playerId;
 
     @Column(name = "`points`")
     private Long points;
+
 
     public Ranking() {
 
@@ -73,4 +75,5 @@ public class Ranking {
         this.playerId = playerId;
         this.points = points;
     }
+
 }

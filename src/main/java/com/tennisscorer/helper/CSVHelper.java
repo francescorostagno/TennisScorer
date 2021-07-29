@@ -8,13 +8,11 @@ import java.util.List;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Tourney;
-import com.tennisscorer.repository.PlayerRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.QuoteMode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tennisscorer.model.TennisMatch;
@@ -212,7 +210,7 @@ public class CSVHelper {
                         String.valueOf(tennisMatch.getWinner_id()),
                         String.valueOf(tennisMatch.getWinner_seed()),
                         String.valueOf(tennisMatch.getWinner_entry()),
-                        tennisMatch.getWinner_name(),
+                        tennisMatch.getWinnerName(),
                         tennisMatch.getWinner_hand(),
                         String.valueOf(tennisMatch.getWinner_ht()),
                         tennisMatch.getWinner_ioc(),
@@ -220,7 +218,7 @@ public class CSVHelper {
                         String.valueOf(tennisMatch.getLoser_id()),
                         String.valueOf(tennisMatch.getLoser_seed()),
                         String.valueOf(tennisMatch.getLoser_entry()),
-                        tennisMatch.getLoser_name(),
+                        tennisMatch.getLoserName(),
                         tennisMatch.getLoser_hand(),
                         tennisMatch.getLoser_ioc(),
                         String.valueOf(tennisMatch.getLoser_ht()),

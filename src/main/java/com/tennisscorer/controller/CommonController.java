@@ -1,6 +1,9 @@
 package com.tennisscorer.controller;
 
-import com.tennisscorer.model.MatchStatistics;
+import com.tennisscorer.dto.GoldenRegister;
+import com.tennisscorer.dto.MatchStatistics;
+import com.tennisscorer.dto.PlayerMatch;
+import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.TennisMatch;
 import com.tennisscorer.model.Tourney;
@@ -64,10 +67,10 @@ public class CommonController {
     }
 
     @GetMapping("/player_ranking")
-    public ResponseEntity<List<Ranking>> getPlayerRanking(@RequestParam("player_id") String player_name){
+    public ResponseEntity<List<Ranking>> getPlayerRanking(@RequestParam("player_name") String player_name){
         try {
             List<Ranking> rankings = commonService.getPlayerRanking(player_name);
-            if(rankings == null){
+            if(rankings.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(rankings, HttpStatus.OK);
@@ -76,5 +79,58 @@ public class CommonController {
         }
     }
 
+    @GetMapping("/player_match")
+    public ResponseEntity<List<PlayerMatch>> getPlayerMatch(@RequestParam("player_name") String player_name){
+        try {
+            List<PlayerMatch> playerMatches = commonService.getPlayerMatch(player_name);
+            if(playerMatches.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(playerMatches, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/golden_register")
+    public ResponseEntity<List<GoldenRegister>> getGoldenRegister(@RequestParam("tourney_name") String tourney_name){
+        try {
+            List<GoldenRegister> goldenRegisters = commonService.getTourneyGoldenRegister(tourney_name);
+            if(goldenRegisters.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(goldenRegisters, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/tourney")
+    public ResponseEntity<List<Tourney>> getTourneyByName(@RequestParam("tourney_name") String tourney_name){
+        try {
+            List<Tourney> tourneys = commonService.getTourneyByName(tourney_name);
+            if(tourneys.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(tourneys, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @GetMapping("/player")
+    public ResponseEntity<Player> getPlayerByName(@RequestParam("player_name") String player_name){
+        try {
+            Player player = commonService.getPlayerByName(player_name);
+            if(player_name == null ){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(player, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
