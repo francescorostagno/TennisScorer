@@ -8,6 +8,19 @@ angular.module('Home')
         $scope.username = $rootScope.globals.currentUser.username;
         $scope.role = $rootScope.globals.currentUser.role;
         $scope.enabled = $rootScope.globals.currentUser.enabled;
+        $scope.player = null;
+
+        $scope.searchValue =[
+            {
+                value: 'playerName' , displayName: 'Search Player'
+            },
+            {
+                value: 'tourneyName' , displayName: 'Search Tourney'
+            },
+            {
+                value: 'goldenRegister' , displayName: 'Search Golden Register'
+            },
+        ]
 
         $scope.uploadFile = function() {
 
@@ -18,14 +31,29 @@ angular.module('Home')
             fileUpload.uploadFileToUrl(file, uploadUrl);
         };
 
+        $scope.clearScope = function (){
+            $scope.player = null;
+            $scope.tourney = [];
+            $scope.goldenRegisterArray = [];
+        }
+
         $scope.submitPlayer = function (){
+            $scope.clearScope();
             var uploadUrl = "api/common/player";
             $scope.submitPlayerToUrl($scope.playerName,uploadUrl)
 
         }
         $scope.submitTourney = function (){
+            $scope.clearScope();
             var uploadUrl = "api/common/tourney";
             $scope.submitTourneyToUrl($scope.tourneyName,uploadUrl);
+
+        }
+
+        $scope.submitGoldenRegister = function (){
+            $scope.clearScope();
+            var uploadUrl = 'api/common/golden_register';
+            $scope.submitGoldenRegisterToUrl($scope.goldenRegister,uploadUrl)
 
         }
 
@@ -39,11 +67,16 @@ angular.module('Home')
                     'Content-Type' : undefined
                 }}).then(function (response){
                 if( response.status === 200){
-                    $scope.playerName = response.data.playerName;
-                    $scope.hand = response.data.hand;
-                    $scope.birthDate = response.data.birth_date;
-                    $scope.countryCode = response.data.country_code;
-                    $("#playerTable").css("visibility", "visible");
+
+                    var yy = response.data.birth_date.slice(0,4);
+                    var mm = response.data.birth_date.slice(5,6);
+                    var dd = response.data.birth_date.slice(7,8);
+                    $scope.player = {
+                        'player' :  response.data.playerName,
+                        'hand' :  response.data.hand,
+                        'birthDate': dd + ':' + mm + ':' + yy,
+                        'countryCode': response.data.country_code
+                    };
                 }
             })
         }
@@ -62,12 +95,49 @@ angular.module('Home')
                     $scope.tourney = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
+
+                            var yy = response.data[i].tourney_date.slice(0,4);
+                            var mm = response.data[i].tourney_date.slice(5,6);
+                            var dd = response.data[i].tourney_date.slice(7,8);
+
                             var edition = {
                                 'winnerName' : response.data[i].winnerName,
                                 'loserName' : response.data[i].loserName,
-                                'tourneyDate' : response.data[i].tourney_date
+                                'tourneyDate' : dd + ':' + mm + ':' + yy
                             }
                             $scope.tourney.push(edition)
+                        }
+                    }
+                }
+            })
+
+        }
+
+        $scope.submitGoldenRegisterToUrl = function (tourneyName, uploadUrl){
+            var data = new FormData();
+            data.append('tourney_name', tourneyName);
+            $http.post(uploadUrl,data,{
+                withCredentials : false,
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }}).then(function (response){
+                if( response.status === 200){
+                    $scope.goldenRegisterArray = [];
+                    if(response.data){
+                        for(var i = 0; i < response.data.length ; i++){
+
+                            var yy = response.data[i].tourney_date.slice(0,4);
+                            var mm = response.data[i].tourney_date.slice(5,6);
+                            var dd = response.data[i].tourney_date.slice(7,8);
+
+                            var edition = {
+                                'winnerName' : response.data[i].winner_name,
+                                'loserName' : response.data[i].loser_name,
+                                'tourneyDate' : dd + ':' + mm + ':' + yy,
+                                'surface' : response.data[i].surface
+                            }
+                            $scope.goldenRegisterArray.push(edition)
                         }
                     }
                 }

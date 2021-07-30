@@ -1,5 +1,7 @@
 package com.tennisscorer.dto;
 
+import com.tennisscorer.model.Player;
+
 public class GoldenRegister{
 
     public String tourney_name;
@@ -8,12 +10,26 @@ public class GoldenRegister{
     public String winner_name;
     public String loser_name;
 
+    public GoldenRegister(String tourney_name, String surface, String tourney_date, String winner_name, String loser_name, Player playerWinner, Player playerLoser) {
+        this.tourney_name = tourney_name;
+        this.surface = surface;
+        this.tourney_date = tourney_date;
+        this.winner_name = winner_name;
+        this.loser_name = loser_name;
+        this.playerWinner = playerWinner;
+        this.playerLoser = playerLoser;
+    }
+
+    public Player playerWinner;
+    public Player playerLoser;
+
     public GoldenRegister(String tourney_name, String surface, String tourney_date, String winner_name, String loser_name) {
         this.tourney_name = tourney_name;
         this.surface = surface;
         this.tourney_date = tourney_date;
         this.winner_name = winner_name;
         this.loser_name = loser_name;
+
     }
 
 

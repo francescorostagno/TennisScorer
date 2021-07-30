@@ -117,7 +117,9 @@ public class CommonService {
                             tourneys.get(i).getSurface(),
                             tourneys.get(i).getTourney_date(),
                             tourneys.get(i).getWinnerName(),
-                            tourneys.get(i).getLoserName()
+                            tourneys.get(i).getLoserName(),
+                            playerRepository.findByPlayerName(tourneys.get(i).getWinnerName()),
+                            playerRepository.findByPlayerName(tourneys.get(i).getLoserName())
                     );
                     goldenRegisters.add(goldenResister);
                 }

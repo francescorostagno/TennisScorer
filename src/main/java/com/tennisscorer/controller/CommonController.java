@@ -92,7 +92,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/golden_register")
+    @PostMapping("/golden_register")
     public ResponseEntity<List<GoldenRegister>> getGoldenRegister(@RequestParam("tourney_name") String tourney_name){
         try {
             List<GoldenRegister> goldenRegisters = commonService.getTourneyGoldenRegister(tourney_name);

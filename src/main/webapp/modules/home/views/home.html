@@ -1,54 +1,116 @@
-<h1>Home</h1>
-<p>You're logged in!!</p>
-<p><a href="#/login">Logout</a></a></p>
-<p>{{ username }}</p>
-<p>{{ enabled }}</p>
-<p>{{ role }}</p>
-
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">HOME</span>
+    <span class="navbar-brand mb-0 ">You're logged in!!  {{ username }}</span>
+    <span class="navbar-brand mb-0 ">Your role is : {{ role}}</span>
+    <a class="navbar-brand" href="#/login">Logout</a></a>
+</nav>
+<br>
+<label>
+    <select class="js-example-basic-single" name="searchType" style="width: 200px" >
+        <option></option>
+        <option ng-repeat="s in searchValue" value="{{ s.value }}">
+            {{ s.displayName }}
+        </option>
+    </select>
+</label>
+<br>
+<br>
 <div ng-controller = "HomeController" ng-hide="role == 'user'">
     <input type = "file" file-model = "myFile"/>
     <button ng-click = "uploadFile()">upload me</button>
 </div>
-<form ng-submit="submitPlayer()" >
-    <label for="playerName" >Player Name: </label><br />
-    <input type="text" id="playerName" ng-model="playerName" /> <br />
-</form>
-
-<div  ng-controller="HomeController" class="tab-content clearfix">
-    <table id='playerTable' ng-show="hand !== null">
+<br>
+<div  ng-controller="HomeController" class="searchType hide" id="playerName">
+    <form ng-submit="submitPlayer()" >
+        <label for="playerNameLabel" >Player Name: </label>
+        <input type="text" id="playerNameLabel" ng-model="playerName" />
+    </form>
+    <table id='playerTable' class="table" ng-show="player !== null">
+        <thead>
         <tr>
-            <td>{{playerName}}</td>
-            <td>{{hand}}</td>
-            <td>{{birthDate}}</td>
-            <td>{{countryCode}}</td>
+            <td>Player Name: </td>
+            <td>Hand: </td>
+            <td>Birth Date: </td>
+            <td>Country Code: </td>
         </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{player.player}}</td>
+            <td>{{player.hand}}</td>
+            <td>{{player.birthDate}}</td>
+            <td>{{player.countryCode}}</td>
+        </tr>
+        </tbody>
+
     </table>
 </div>
-
-<form ng-submit="submitTourney()" >
-    <label for="tourneyName" >Tourney Name: </label><br />
-    <input type="text" id="tourneyName" ng-model="tourneyName" /> <br />
-</form>
-
-<div ng-controller="HomeController" class="tab-content clearfix">
-    <table ng-show="tourney.length > 0">
+<div ng-controller="HomeController" class="searchType hide" id="tourneyName">
+    <form ng-submit="submitTourney()" >
+        <label for="tourneyNameLabel" >Tourney Name: </label>
+        <input type="text" id="tourneyNameLabel" ng-model="tourneyName" />
+    </form>
+    <table ng-show="tourney.length > 0" class="table">
+        <thead>
+        <tr>
+            <td>Winner Name: </td>
+            <td>Loser Name: </td>
+            <td>Tourney Date: </td>
+        </tr>
+        </thead>
         <tbody ng-repeat=" t in tourney">
-            <tr>
-                <td>Winner Name: </td>
-                <td>{{ t.winnerName}}</td>
-            </tr>
-            <tr>
-                <td>Loser Name: </td>
-                <td>
-                    {{ t.loserName}}
-                </td>
-            </tr>
-            <tr>
-                <td>Tourney Date: </td>
-                <td>
-                    {{ t.tourneyDate}}
-                </td>
-            </tr>
+        <tr>
+            <td>{{ t.winnerName}}</td>
+            <td>
+                {{ t.loserName}}
+            </td>
+            <td>
+                {{ t.tourneyDate}}
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
+<div ng-controller="HomeController" class="searchType hide" id="goldenRegister">
+    <form ng-submit="submitGoldenRegister()" >
+        <label for="tourneyNameLabel" >Tourney Name: </label>
+        <input type="text" id="goldenRegisterLabel" ng-model="goldenRegister" />
+    </form>
+    <table ng-show="goldenRegisterArray.length > 0" class="table">
+        <thead>
+        <tr>
+            <td>Winner Name: </td>
+            <td>Loser Name: </td>
+            <td>Tourney Date: </td>
+            <td>Surface: </td>
+        </tr>
+        </thead>
+        <tbody ng-repeat=" g in goldenRegisterArray">
+        <tr>
+            <td>{{ g.winnerName}}</td>
+            <td>
+                {{ g.loserName}}
+            </td>
+            <td>
+                {{ g.tourneyDate}}
+            </td>
+            <td>
+                {{ g.surface}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+        $('.searchType').hide();
+
+        $('select[name=searchType]').change(function (){
+           $('.searchType').hide();
+            $('#' + $(this).val()).show();
+        })
+    });
+</script>
