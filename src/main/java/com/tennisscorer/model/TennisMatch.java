@@ -164,13 +164,67 @@ public class TennisMatch {
     private Player winnerPlayer;
 
 
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn( name = "`loser_name`", referencedColumnName = "`player_name`", nullable = false, insertable = false, updatable = false)
     private Player loserPlayer;
 
     public TennisMatch() {
 
+    }
+
+    public TennisMatch(Long id, String tourneyId, String tourney_name, String surface, long draw_size, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winner_rank_points, int loser_rank, int loser_rank_points, Player winnerPlayer, Player loserPlayer) {
+        this.id = id;
+        this.tourneyId = tourneyId;
+        this.tourney_name = tourney_name;
+        this.surface = surface;
+        this.draw_size = draw_size;
+        this.tourney_level = tourney_level;
+        this.tourney_date = tourney_date;
+        this.matchNum = matchNum;
+        this.winner_id = winner_id;
+        this.winner_seed = winner_seed;
+        this.winner_entry = winner_entry;
+        this.winnerName = winnerName;
+        this.winner_hand = winner_hand;
+        this.winner_ht = winner_ht;
+        this.winner_ioc = winner_ioc;
+        this.winner_age = winner_age;
+        this.loser_id = loser_id;
+        this.loser_seed = loser_seed;
+        this.loser_entry = loser_entry;
+        this.loserName = loserName;
+        this.loser_hand = loser_hand;
+        this.loser_ioc = loser_ioc;
+        this.loser_ht = loser_ht;
+        this.loser_age = loser_age;
+        this.score = score;
+        this.best_of = best_of;
+        this.round = round;
+        this.minutes = minutes;
+        this.w_ace = w_ace;
+        this.w_df = w_df;
+        this.w_svpt = w_svpt;
+        this.w_1st_in = w_1st_in;
+        this.w_1st_won = w_1st_won;
+        this.w_2nd_won = w_2nd_won;
+        this.w_sv_gms = w_sv_gms;
+        this.w_bp_saved = w_bp_saved;
+        this.w_bp_faced = w_bp_faced;
+        this.l_ace = l_ace;
+        this.l_df = l_df;
+        this.l_svpt = l_svpt;
+        this.l_1st_in = l_1st_in;
+        this.l_1st_won = l_1st_won;
+        this.l_2nd_won = l_2nd_won;
+        this.l_sv_gms = l_sv_gms;
+        this.l_bp_saved = l_bp_saved;
+        this.l_bp_faced = l_bp_faced;
+        this.winner_rank = winner_rank;
+        this.winner_rank_points = winner_rank_points;
+        this.loser_rank = loser_rank;
+        this.loser_rank_points = loser_rank_points;
+        this.winnerPlayer = winnerPlayer;
+        this.loserPlayer = loserPlayer;
     }
 
     public TennisMatch(String tourney_id, String tourneyName, String surface, long drawSize, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winnerRankPoints, int loser_rank, int loser_rank_points) {

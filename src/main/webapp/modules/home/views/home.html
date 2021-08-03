@@ -25,81 +25,162 @@
         <label for="playerNameLabel" >Player Name: </label>
         <input type="text" id="playerNameLabel" ng-model="playerName" />
     </form>
-    <table id='playerTable' class="table" ng-show="player !== null">
-        <thead>
-        <tr>
-            <td>Player Name: </td>
-            <td>Hand: </td>
-            <td>Birth Date: </td>
-            <td>Country Code: </td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{player.player}}</td>
-            <td>{{player.hand}}</td>
-            <td>{{player.birthDate}}</td>
-            <td>{{player.countryCode}}</td>
-        </tr>
-        </tbody>
+    <div ng-show="player !== null"  class="table-wrapper-scroll-y my-custom-scrollbar" >
+        <table id='playerTable'  class="table table-bordered table-striped mb-0" >
+            <thead>
+            <tr>
+                <td>Player Name: </td>
+                <td>Hand: </td>
+                <td>Birth Date: </td>
+                <td>Country Code: </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{player.player}}</td>
+                <td>{{player.hand}}</td>
+                <td>{{player.birthDate}}</td>
+                <td>{{player.countryCode}}</td>
+            </tr>
+            </tbody>
 
-    </table>
+        </table>
+    </div>
 </div>
 <div ng-controller="HomeController" class="searchType hide" id="tourneyName">
     <form ng-submit="submitTourney()" >
         <label for="tourneyNameLabel" >Tourney Name: </label>
         <input type="text" id="tourneyNameLabel" ng-model="tourneyName" />
     </form>
-    <table ng-show="tourney.length > 0" class="table">
-        <thead>
-        <tr>
-            <td>Winner Name: </td>
-            <td>Loser Name: </td>
-            <td>Tourney Date: </td>
-        </tr>
-        </thead>
-        <tbody ng-repeat=" t in tourney">
-        <tr>
-            <td>{{ t.winnerName}}</td>
-            <td>
-                {{ t.loserName}}
-            </td>
-            <td>
-                {{ t.tourneyDate}}
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div  ng-show="tourney.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar"  >
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+                <td>Winner Name: </td>
+                <td>Loser Name: </td>
+                <td>Tourney Date: </td>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" t in tourney">
+            <tr>
+                <td>{{ t.winnerName}}</td>
+                <td>
+                    {{ t.loserName}}
+                </td>
+                <td>
+                    {{ t.tourneyDate}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 <div ng-controller="HomeController" class="searchType hide" id="goldenRegister">
     <form ng-submit="submitGoldenRegister()" >
-        <label for="tourneyNameLabel" >Tourney Name: </label>
+        <label for="goldenRegisterLabel" >Tourney Name: </label>
         <input type="text" id="goldenRegisterLabel" ng-model="goldenRegister" />
     </form>
-    <table ng-show="goldenRegisterArray.length > 0" class="table">
-        <thead>
-        <tr>
-            <td>Winner Name: </td>
-            <td>Loser Name: </td>
-            <td>Tourney Date: </td>
-            <td>Surface: </td>
-        </tr>
-        </thead>
-        <tbody ng-repeat=" g in goldenRegisterArray">
-        <tr>
-            <td>{{ g.winnerName}}</td>
-            <td>
-                {{ g.loserName}}
-            </td>
-            <td>
-                {{ g.tourneyDate}}
-            </td>
-            <td>
-                {{ g.surface}}
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div  ng-show="goldenRegisterArray.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+                <td>Winner Name: </td>
+                <td>Loser Name: </td>
+                <td>Tourney Date: </td>
+                <td>Surface: </td>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" g in goldenRegisterArray">
+            <tr>
+                <td>{{ g.winnerName}}</td>
+                <td>
+                    {{ g.loserName}}
+                </td>
+                <td>
+                    {{ g.tourneyDate}}
+                </td>
+                <td>
+                    {{ g.surface}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div ng-controller="HomeController" class="searchType hide" id="tourneyMatch">
+    <form ng-submit="submitTourneyMatch()" >
+        <label for="tourneyMatchLabel" >Tourney ID: </label>
+        <input type="text" id="tourneyMatchLabel" ng-model="tourneyMatchId" />
+    </form>
+    <div ng-show="tourneyMatchsArray.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar"  >
+        <table class="table table-bordered table-striped mb-0" id="tourneyMatchTable" >
+            <thead>
+            <tr>
+                <td>Winner Player: </td>
+                <td>Loser Player: </td>
+                <td>Score: </td>
+                <td>Match Number: </td>
+                <td>Match Date: </td>
+                <td>Statistics: </td>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" tm in tourneyMatchsArray">
+            <tr>
+                <td>{{ tm.winnerPlayer}}</td>
+                <td>
+                    {{ tm.loserPlayer}}
+                </td>
+                <td>
+                    {{ tm.score}}
+                </td>
+                <td>
+                    {{ tm.matchNum}}
+                </td>
+                <td>
+                    {{ tm.matchDate}}
+                </td>
+                <td>
+                    <ul  class="overflow-auto" ng-repeat=" (key, value)  in tm.matchStatistics">
+                        <li>{{ key }} : {{ value}}</li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div ng-controller="HomeController" class="searchType hide" id="rankingPlayer">
+    <form ng-submit="submitPlayerRanking()" >
+        <label for="rankingPlayerLabel" >Tourney ID: </label>
+        <input type="text" id="rankingPlayerLabel" ng-model="playerNameRanking" />
+    </form>
+    <div ng-show="playerRankingsArray.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar" >
+        <table class="table table-bordered table-striped mb-0" id="playerRankingTable" >
+            <thead>
+            <tr>
+                <th class="th-sm">Rank: </th>
+                <th class="th-sm">Points: </th>
+                <th class="th-sm">Date: </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" pr in playerRankingsArray">
+            <tr>
+                <td>{{ pr.rank}}</td>
+                <td>
+                    {{ pr.points}}
+                </td>
+                <td>
+                    {{ pr.rankingDate}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 
@@ -112,5 +193,6 @@
            $('.searchType').hide();
             $('#' + $(this).val()).show();
         })
+
     });
 </script>

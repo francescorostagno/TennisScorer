@@ -6,6 +6,7 @@ import java.util.List;
 import com.tennisscorer.dto.GoldenRegister;
 import com.tennisscorer.dto.MatchStatistics;
 import com.tennisscorer.dto.PlayerMatch;
+import com.tennisscorer.dto.TourneyMatch;
 import com.tennisscorer.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -136,4 +137,31 @@ public class CommonService {
     public List<Tourney> getAllTourney(){
         return (List<Tourney>) tourneyRepository.findAll();
     }
+
+
+    public List<Tourney> getAllPlayerWinnerTourney(String playerName){
+        List<Tourney> winnerTourneys = tourneyRepository.findAllByWinnerPlayer(playerRepository.findByPlayerName(playerName));
+        return winnerTourneys;
+    }
+
+    public List<TourneyMatch> getAllTourneyMatch(String tourney_id){
+        List<TourneyMatch> tourneyMatches = new ArrayList<>();
+        List<TennisMatch> tennisMatches = repository.findAllByTourneyId(tourney_id);
+        if(!tennisMatches.isEmpty()){
+            for (int i = 0; i < tennisMatches.size(); i++){
+                TourneyMatch tourneyMatch = new TourneyMatch(
+                        tennisMatches.get(i).getWinnerPlayer(),
+                        tennisMatches.get(i).getLoserPlayer(),
+                        tennisMatches.get(i).getScore(),
+                        tennisMatches.get(i).getMatch_num(),
+                        getMatchStatistics(tourney_id,tennisMatches.get(i).getMatch_num()),
+                        tennisMatches.get(i).getTourney_date()
+                );
+
+                tourneyMatches.add(tourneyMatch);
+            }
+        }
+        return tourneyMatches;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.tennisscorer.controller;
 import com.tennisscorer.dto.GoldenRegister;
 import com.tennisscorer.dto.MatchStatistics;
 import com.tennisscorer.dto.PlayerMatch;
+import com.tennisscorer.dto.TourneyMatch;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.TennisMatch;
@@ -39,19 +40,6 @@ public class CommonController {
         }
     }
 
-
-    @PostMapping("/tourney_match")
-    public ResponseEntity<List<TennisMatch>> getTourneyTennisMatch(@RequestParam("tourney_id") String tourney_id){
-        try {
-            List<TennisMatch> tennisMatches = commonService.getTourneyTennisMatch(tourney_id);
-            if(tennisMatches.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(tennisMatches, HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     @PostMapping("/match_statistics")
     public ResponseEntity<MatchStatistics> getMatchStatistics(@RequestParam("tourney_id") String tourney_id, @RequestParam("match_num") Integer match_num){
@@ -129,6 +117,32 @@ public class CommonController {
             }
             return new ResponseEntity<>(player, HttpStatus.OK);
         }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/player_winner_tourneys")
+    public ResponseEntity<List<Tourney>> getAllPlayerWinnerTourney(@RequestParam("player_name") String player_name){
+        try{
+            List<Tourney> tourneys = commonService.getAllPlayerWinnerTourney(player_name);
+            if(tourneys.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(tourneys, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/tourney_match")
+    public ResponseEntity<List<TourneyMatch>> getAllTourneyMatch(@RequestParam("tourney_id") String tourney_id){
+        try {
+            List<TourneyMatch> tourneyMatches = commonService.getAllTourneyMatch(tourney_id);
+            if(tourneyMatches.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(tourneyMatches,HttpStatus.OK);
+        }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

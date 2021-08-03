@@ -20,10 +20,15 @@ angular.module('Home')
             {
                 value: 'goldenRegister' , displayName: 'Search Golden Register'
             },
+            {
+                value: 'tourneyMatch' ,displayName: 'Search Tourney Match'
+            },
+            {
+                value:'rankingPlayer', displayName: 'Search Player Ranking'
+            }
         ]
 
         $scope.uploadFile = function() {
-
             var file = $scope.myFile;
             console.log('file is ' );
             console.dir(file);
@@ -55,6 +60,81 @@ angular.module('Home')
             var uploadUrl = 'api/common/golden_register';
             $scope.submitGoldenRegisterToUrl($scope.goldenRegister,uploadUrl)
 
+        }
+
+        $scope.submitTourneyMatch = function (){
+            var uploadUrl = 'api/common/tourney_match';
+            $scope.submitTourneyMatchToUrl($scope.tourneyMatchId, uploadUrl)
+        }
+
+        $scope.submitPlayerRanking = function(){
+            var uploadUrl = 'api/common/player_ranking'
+            $scope.submitPlayerRankingToUrl($scope.playerNameRanking,uploadUrl);
+        }
+
+        $scope.submitPlayerRankingToUrl = function (playerNameRanking,uploadUrl){
+            var data = new FormData();
+            data.append('player_name', playerNameRanking);
+            $http.post(uploadUrl,data,{
+                withCredentials : false,
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }}).then(function (response){
+                if( response.status === 200){
+                    $scope.playerRankingsArray = [];
+                    if(response.data){
+                        for(var i = 0; i < response.data.length ; i++){
+
+                            var yy = response.data[i].rankingDate.slice(0,4);
+                            var mm = response.data[i].rankingDate.slice(5,6);
+                            var dd = response.data[i].rankingDate.slice(7,8);
+
+                            var ranking = {
+                                'rankingDate' : dd + ':' + mm + ':' + yy,
+                                'rank' : response.data[i].rank,
+                                'points' : response.data[i].points
+                            }
+                            $scope.playerRankingsArray.push(ranking);
+                        }
+                    }
+
+                }
+            })
+        }
+
+        $scope.submitTourneyMatchToUrl = function (tourneyMatchId,uploadUrl){
+            var data = new FormData();
+            data.append('tourney_id', tourneyMatchId);
+            $http.post(uploadUrl,data,{
+                withCredentials : false,
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }}).then(function (response){
+                if( response.status === 200){
+                    $scope.tourneyMatchsArray = [];
+                    if(response.data){
+                        for(var i = 0; i < response.data.length ; i++){
+
+                            var yy = response.data[i].match_date.slice(0,4);
+                            var mm = response.data[i].match_date.slice(5,6);
+                            var dd = response.data[i].match_date.slice(7,8);
+
+                            var match = {
+                                'winnerPlayer' : response.data[i].winnerPlayer.playerName,
+                                'loserPlayer' : response.data[i].loserPlayer.playerName,
+                                'score' : response.data[i].score,
+                                'matchStatistics' : response.data[i].matchStatistics,
+                                'matchNum' : response.data[i].match_num,
+                                'matchDate' : dd + ':' + mm + ':' + yy
+                            }
+                            $scope.tourneyMatchsArray.push(match);
+                        }
+                    }
+
+                }
+            })
         }
 
         $scope.submitPlayerToUrl = function (playerName,uploadUrl){
