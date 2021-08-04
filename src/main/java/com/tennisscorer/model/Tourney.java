@@ -1,10 +1,11 @@
 package com.tennisscorer.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "`tourney`")
-public class Tourney {
+public class Tourney implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")

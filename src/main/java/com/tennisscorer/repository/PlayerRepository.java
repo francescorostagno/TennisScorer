@@ -1,14 +1,10 @@
 package com.tennisscorer.repository;
-import com.tennisscorer.model.Player;
 
-import com.tennisscorer.model.User;
+import com.tennisscorer.model.Player;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 public interface PlayerRepository extends CrudRepository<Player,Long>{

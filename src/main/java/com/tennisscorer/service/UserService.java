@@ -1,15 +1,18 @@
 package com.tennisscorer.service;
-import com.tennisscorer.helper.MD5;
 
+import com.tennisscorer.helper.MD5;
+import com.tennisscorer.model.User;
+import com.tennisscorer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.tennisscorer.model.User;
-import com.tennisscorer.repository.UserRepository;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 
 @Configurable
@@ -40,15 +43,21 @@ public class UserService {
     }
 
 
-    public ResponseEntity<User> authenticate(String username,String password){
-        User user = userRepository.authenticate(username,password);
-        if( user != null){
-            return new ResponseEntity<User>(user, HttpStatus.OK);
-        }else{
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public User authenticate(String username,String password){
+        return userRepository.authenticate(username,password);
     }
 
+    public String getRoleCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (Objects.equals(cookies[i].getName(), "ROLE")){
+                    return cookies[i].getValue();
+                }
+            }
+        }
+        return "NOT_ALLOWED";
+    }
 
     @Transactional(readOnly = false)
     public ResponseEntity<User> register(String username,String password,String email){

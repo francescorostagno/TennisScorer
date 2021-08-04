@@ -1,10 +1,7 @@
 package com.tennisscorer.controller;
 
-import java.util.List;
-
 import com.tennisscorer.helper.CSVHelper;
 import com.tennisscorer.message.ResponseMessage;
-import com.tennisscorer.model.TennisMatch;
 import com.tennisscorer.service.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -16,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @CrossOrigin("http://localhost:8081")
 @RestController
 @RequestMapping("/api/csv")
@@ -26,13 +22,11 @@ public class CSVController {
     CSVService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @CookieValue("ROLE") String role) {
         String message = "";
-
-        if (CSVHelper.hasCSVFormat(file)) {
+        if (CSVHelper.hasCSVFormat(file) && role.contains("admin")) {
             try {
-                fileService.save(file);
-
+                fileService.saveStatistics(file);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
             } catch (Exception e) {
@@ -45,19 +39,8 @@ public class CSVController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 
-    @GetMapping("/tennisMatch")
-    public ResponseEntity<List<TennisMatch>> getAllTennisMatch(){
-        try {
-            List<TennisMatch> tennisMatches = fileService.getAllTennisMatch();
-            if(tennisMatches.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(tennisMatches, HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
-    }
+
 
     @PostMapping("/upload_players")
     public ResponseEntity<ResponseMessage> uploadFilePlayers(@RequestParam("file") MultipartFile file){

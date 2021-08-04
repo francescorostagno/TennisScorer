@@ -1,21 +1,16 @@
 package com.tennisscorer.helper;
 
+import com.tennisscorer.model.Player;
+import com.tennisscorer.model.Ranking;
+import com.tennisscorer.model.Statistics;
+import com.tennisscorer.model.Tourney;
+import org.apache.commons.csv.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.tennisscorer.model.Player;
-import com.tennisscorer.model.Ranking;
-import com.tennisscorer.model.Tourney;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.csv.QuoteMode;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.tennisscorer.model.TennisMatch;
 
 public class CSVHelper {
 
@@ -39,8 +34,9 @@ public class CSVHelper {
         return true;
     }
 
-    public static List<TennisMatch> csvToTennisMatch(InputStream is){
-        List<TennisMatch> tennisMatches = new ArrayList<TennisMatch>();
+    public static List<Statistics> csvToStatistics(InputStream is){
+
+        List<Statistics> tennisMatches = new ArrayList<Statistics>();
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());){
@@ -48,13 +44,8 @@ public class CSVHelper {
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords) {
-                TennisMatch tennisMatch = new TennisMatch(
+                Statistics statistics = new Statistics(
                         csvRecord.get("tourney_id"),
-                        csvRecord.get("tourney_name"),
-                        csvRecord.get("surface"),
-                        Long.parseLong(!csvRecord.get("draw_size").equals("")? csvRecord.get("draw_size") : "0"),
-                        csvRecord.get("tourney_level"),
-                        csvRecord.get("tourney_date"),
                         Integer.parseInt( !csvRecord.get("match_num").equals("") ? csvRecord.get("match_num") : "0"),
                         Long.parseLong(!csvRecord.get("winner_id").equals("") ? csvRecord.get("winner_id") : "0"),
                         Integer.parseInt( !csvRecord.get("winner_seed").equals("") ? csvRecord.get("winner_seed") : "0" ),
@@ -99,8 +90,7 @@ public class CSVHelper {
                         Integer.parseInt(!csvRecord.get("loser_rank").equals("") ? csvRecord.get("loser_rank"): "0"),
                         Integer.parseInt(!csvRecord.get("loser_rank_points").equals("") ? csvRecord.get("loser_rank_points"): "0")
                 );
-                tennisMatches.add(tennisMatch);
-
+                tennisMatches.add(statistics);
 
             }
 
@@ -193,20 +183,20 @@ public class CSVHelper {
 
     }
 
-    public static ByteArrayInputStream tennisMatchToCsv(List<TennisMatch> tennisMatches){
+    public static ByteArrayInputStream tennisMatchToCsv(List<Statistics> tennisMatches){
         final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);) {
-            for(TennisMatch tennisMatch : tennisMatches){
+            for(Statistics tennisMatch : tennisMatches){
                 List<String> data = Arrays.asList(
                         String.valueOf(tennisMatch.getId()),
                         tennisMatch.getTourneyId(),
-                        tennisMatch.getTourney_name(),
-                        tennisMatch.getSurface(),
-                        String.valueOf(tennisMatch.getDraw_size()),
-                        tennisMatch.getTourney_level(),
-                        tennisMatch.getTourney_date(),
-                        String.valueOf(tennisMatch.getMatch_num()),
+                        tennisMatch.getTourney().getTourneyName(),
+                        tennisMatch.getTourney().getSurface(),
+                        String.valueOf(tennisMatch.getTourney().getDraw_size()),
+                        tennisMatch.getTourney().getLevel(),
+                        tennisMatch.getTourney().getTourney_date(),
+                        String.valueOf(tennisMatch.getMatchNum()),
                         String.valueOf(tennisMatch.getWinner_id()),
                         String.valueOf(tennisMatch.getWinner_seed()),
                         String.valueOf(tennisMatch.getWinner_entry()),

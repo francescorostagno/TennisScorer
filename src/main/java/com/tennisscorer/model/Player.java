@@ -1,7 +1,5 @@
 package com.tennisscorer.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;

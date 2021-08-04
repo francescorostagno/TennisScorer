@@ -1,12 +1,8 @@
 package com.tennisscorer.controller;
 
-import com.tennisscorer.dto.GoldenRegister;
-import com.tennisscorer.dto.MatchStatistics;
-import com.tennisscorer.dto.PlayerMatch;
-import com.tennisscorer.dto.TourneyMatch;
+import com.tennisscorer.dto.*;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
-import com.tennisscorer.model.TennisMatch;
 import com.tennisscorer.model.Tourney;
 import com.tennisscorer.repository.TourneyRepository;
 import com.tennisscorer.service.CommonService;
@@ -49,6 +45,19 @@ public class CommonController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(matchStatistics, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/match")
+    public ResponseEntity<List<Match>> getAllMatch(){
+        try {
+            List<Match> tennisMatches = commonService.getAllMatch();
+            if(tennisMatches.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(tennisMatches, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

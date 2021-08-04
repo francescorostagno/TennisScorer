@@ -1,35 +1,29 @@
 package com.tennisscorer.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.tennisscorer.dto.GoldenRegister;
-import com.tennisscorer.dto.MatchStatistics;
-import com.tennisscorer.dto.PlayerMatch;
-import com.tennisscorer.dto.TourneyMatch;
-import com.tennisscorer.model.*;
+import com.tennisscorer.dto.*;
+import com.tennisscorer.model.Player;
+import com.tennisscorer.model.Ranking;
+import com.tennisscorer.model.Statistics;
+import com.tennisscorer.model.Tourney;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configurable
 @Service
 public class CommonService {
 
     @Autowired
-    com.tennisscorer.repository.TennisRepository repository;
-    @Autowired
     com.tennisscorer.repository.PlayerRepository playerRepository;
     @Autowired
     com.tennisscorer.repository.TourneyRepository tourneyRepository;
-
+    @Autowired
+    com.tennisscorer.repository.StatisticsRepository statisticsRepository;
     @Autowired
     com.tennisscorer.repository.RankingRepository rankingRepository;
-
-    public List<TennisMatch> getTourneyTennisMatch(String tourney_id){
-       return repository.findAllByTourneyId(tourney_id);
-    }
 
     public List<Tourney> getTourneyByName(String tourney_name){
         return tourneyRepository.findAllByTourneyName(tourney_name);
@@ -40,7 +34,7 @@ public class CommonService {
     }
 
     public MatchStatistics getMatchStatistics(String tourney_id, Integer match_num){
-        TennisMatch tennisMatch = repository.findByTourneyIdAndMatchNum(tourney_id,match_num);
+        Statistics tennisMatch = statisticsRepository.findByTourneyIdAndMatchNum(tourney_id,match_num);
         return new MatchStatistics(
                 tennisMatch.getW_ace(),
                 tennisMatch.getW_df(),
@@ -78,12 +72,12 @@ public class CommonService {
     }
 
     public List<PlayerMatch> getPlayerMatch(String player_name){
-        List<TennisMatch> tennisMatchesWinner = repository.findAllByWinnerName(player_name);
+        List<Statistics> tennisMatchesWinner = statisticsRepository.findAllByWinnerName(player_name);
         List<PlayerMatch> allPlayerMatch = new ArrayList<>();
         if(tennisMatchesWinner != null){
             for( int i = 0; i < tennisMatchesWinner.size(); i ++){
                 PlayerMatch playerMatch = new PlayerMatch(
-                        tennisMatchesWinner.get(i).getTourney_name(),
+                        tennisMatchesWinner.get(i).getTourney().getTourneyName(),
                         tennisMatchesWinner.get(i).getScore(),
                         tennisMatchesWinner.get(i).getLoserName(),
                         1
@@ -91,11 +85,11 @@ public class CommonService {
                 allPlayerMatch.add(playerMatch);
             }
         }
-        List<TennisMatch> tennisMatchesLoser = repository.findAllByLoserName(player_name);
+        List<Statistics> tennisMatchesLoser = statisticsRepository.findAllByLoserName(player_name);
         if(tennisMatchesLoser != null){
             for(int i = 0; i < tennisMatchesLoser.size(); i ++){
                 PlayerMatch playerMatch = new PlayerMatch(
-                        tennisMatchesLoser.get(i).getTourney_name(),
+                        tennisMatchesLoser.get(i).getTourney().getTourneyName(),
                         tennisMatchesLoser.get(i).getScore(),
                         tennisMatchesLoser.get(i).getWinnerName(),
                         0
@@ -119,8 +113,8 @@ public class CommonService {
                             tourneys.get(i).getTourney_date(),
                             tourneys.get(i).getWinnerName(),
                             tourneys.get(i).getLoserName(),
-                            playerRepository.findByPlayerName(tourneys.get(i).getWinnerName()),
-                            playerRepository.findByPlayerName(tourneys.get(i).getLoserName())
+                            tourneys.get(i).getWinnerPlayer(),
+                            tourneys.get(i).getLoserPlayer()
                     );
                     goldenRegisters.add(goldenResister);
                 }
@@ -146,22 +140,89 @@ public class CommonService {
 
     public List<TourneyMatch> getAllTourneyMatch(String tourney_id){
         List<TourneyMatch> tourneyMatches = new ArrayList<>();
-        List<TennisMatch> tennisMatches = repository.findAllByTourneyId(tourney_id);
+        List<Statistics> tennisMatches = statisticsRepository.findAllByTourneyId(tourney_id);
         if(!tennisMatches.isEmpty()){
             for (int i = 0; i < tennisMatches.size(); i++){
-                TourneyMatch tourneyMatch = new TourneyMatch(
+                TourneyMatch  tourneyMatch = new TourneyMatch(
                         tennisMatches.get(i).getWinnerPlayer(),
                         tennisMatches.get(i).getLoserPlayer(),
                         tennisMatches.get(i).getScore(),
-                        tennisMatches.get(i).getMatch_num(),
-                        getMatchStatistics(tourney_id,tennisMatches.get(i).getMatch_num()),
-                        tennisMatches.get(i).getTourney_date()
+                        tennisMatches.get(i).getMatchNum(),
+                        getMatchStatistics(tourney_id,tennisMatches.get(i).getMatchNum()),
+                        tennisMatches.get(i).getTourney().getTourney_date()
                 );
 
                 tourneyMatches.add(tourneyMatch);
             }
         }
         return tourneyMatches;
+    }
+
+    public List<Match> getAllMatch(){
+        List<Statistics> statisticsList = (List<Statistics>) statisticsRepository.findAll();
+        List<Match> matchList = new ArrayList<>();
+        if( !statisticsList.isEmpty()){
+            for(int i = 0; i < statisticsList.size(); i ++){
+                Tourney tourney = statisticsList.get(i).getTourney();
+                Match match = new Match(
+                        statisticsList.get(i).getTourneyId(),
+                        tourney.getTourneyName(),
+                        tourney.getSurface(),
+                        tourney.getDraw_size(),
+                        tourney.getLevel(),
+                        tourney.getTourney_date(),
+                        statisticsList.get(i).getMatchNum(),
+                        statisticsList.get(i).getWinner_id(),
+                        statisticsList.get(i).getWinner_seed(),
+                        statisticsList.get(i).getWinner_entry(),
+                        statisticsList.get(i).getWinnerName(),
+                        statisticsList.get(i).getWinner_hand(),
+                        statisticsList.get(i).getWinner_ht(),
+                        statisticsList.get(i).getWinner_ioc(),
+                        statisticsList.get(i).getWinner_age(),
+                        statisticsList.get(i).getLoser_id(),
+                        statisticsList.get(i).getLoser_seed(),
+                        statisticsList.get(i).getLoser_entry(),
+                        statisticsList.get(i).getLoserName(),
+                        statisticsList.get(i).getLoser_hand(),
+                        statisticsList.get(i).getLoser_ioc(),
+                        statisticsList.get(i).getLoser_ht(),
+                        statisticsList.get(i).getLoser_age(),
+                        statisticsList.get(i).getScore(),
+                        statisticsList.get(i).getBest_of(),
+                        statisticsList.get(i).getRound(),
+                        statisticsList.get(i).getMinutes(),
+                        statisticsList.get(i).getW_ace(),
+                        statisticsList.get(i).getW_df(),
+                        statisticsList.get(i).getW_svpt(),
+                        statisticsList.get(i).getW_1st_in(),
+                        statisticsList.get(i).getW_1st_won(),
+                        statisticsList.get(i).getW_2nd_won(),
+                        statisticsList.get(i).getW_sv_gms(),
+                        statisticsList.get(i).getW_bp_saved(),
+                        statisticsList.get(i).getW_bp_faced(),
+                        statisticsList.get(i).getL_ace(),
+                        statisticsList.get(i).getL_df(),
+                        statisticsList.get(i).getL_svpt(),
+                        statisticsList.get(i).getL_1st_in(),
+                        statisticsList.get(i).getL_1st_won(),
+                        statisticsList.get(i).getL_2nd_won(),
+                        statisticsList.get(i).getL_sv_gms(),
+                        statisticsList.get(i).getL_bp_saved(),
+                        statisticsList.get(i).getL_bp_faced(),
+                        statisticsList.get(i).getWinner_rank(),
+                        statisticsList.get(i).getWinner_rank_points(),
+                        statisticsList.get(i).getLoser_rank(),
+                        statisticsList.get(i).getLoser_rank_points(),
+                        statisticsList.get(i).getWinnerPlayer(),
+                        statisticsList.get(i).getLoserPlayer(),
+                        tourney
+                );
+                matchList.add(match);
+            }
+        }
+
+        return matchList;
     }
 
 }

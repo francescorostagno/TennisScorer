@@ -40,14 +40,18 @@ angular.module('Authentication')
                     role: role
                 }
             };
+
+            role = role.toString().replace('"', '')
  
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);
+            $cookieStore.put('ROLE',  role);
         };
  
         service.ClearCredentials = function () {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
+            $cookieStore.remove('ROLE');
             $http.defaults.headers.common.Authorization = 'Basic ';
         };
  

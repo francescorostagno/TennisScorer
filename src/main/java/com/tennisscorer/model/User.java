@@ -1,9 +1,6 @@
 package com.tennisscorer.model;
-import org.dom4j.tree.AbstractEntity;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Entity
