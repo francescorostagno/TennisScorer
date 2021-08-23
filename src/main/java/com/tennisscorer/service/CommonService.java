@@ -1,6 +1,7 @@
 package com.tennisscorer.service;
 
 import com.tennisscorer.dto.*;
+import com.tennisscorer.helper.CommonHelper;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Statistics;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,5 +226,113 @@ public class CommonService {
 
         return matchList;
     }
+
+    public List<Ranking> getDateRangeRanking(String date_start,String date_end) throws ParseException {
+        List<Ranking> allRankings = (List<Ranking>) rankingRepository.findAll();
+        List<Ranking> rangeRankings = new ArrayList<>();
+        if(!allRankings.isEmpty()){
+            for(int i = 0; i < allRankings.size(); i++){
+                if( CommonHelper.compareTwoDate(date_start,date_end,allRankings.get(i).getRankingDate())){
+                    rangeRankings.add(allRankings.get(i));
+                }
+            }
+        }
+        return rangeRankings;
+    }
+
+    public List<Match> getDateRangeMatch(String date_start,String date_end) throws ParseException {
+        List<Statistics> allMatch = (List<Statistics>) statisticsRepository.findAll();
+        List<Match> rangeMatch = new ArrayList<>();
+        if(!allMatch.isEmpty()){
+            for(int i = 0; i < allMatch.size(); i++){
+                if( CommonHelper.compareTwoDate(date_start,date_end,allMatch.get(i).getTourney().getTourney_date())){
+                    Tourney tourney = allMatch.get(i).getTourney();
+                    Match match = new Match(
+                            allMatch.get(i).getTourneyId(),
+                            tourney.getTourneyName(),
+                            tourney.getSurface(),
+                            tourney.getDraw_size(),
+                            tourney.getLevel(),
+                            tourney.getTourney_date(),
+                            allMatch.get(i).getMatchNum(),
+                            allMatch.get(i).getWinner_id(),
+                            allMatch.get(i).getWinner_seed(),
+                            allMatch.get(i).getWinner_entry(),
+                            allMatch.get(i).getWinnerName(),
+                            allMatch.get(i).getWinner_hand(),
+                            allMatch.get(i).getWinner_ht(),
+                            allMatch.get(i).getWinner_ioc(),
+                            allMatch.get(i).getWinner_age(),
+                            allMatch.get(i).getLoser_id(),
+                            allMatch.get(i).getLoser_seed(),
+                            allMatch.get(i).getLoser_entry(),
+                            allMatch.get(i).getLoserName(),
+                            allMatch.get(i).getLoser_hand(),
+                            allMatch.get(i).getLoser_ioc(),
+                            allMatch.get(i).getLoser_ht(),
+                            allMatch.get(i).getLoser_age(),
+                            allMatch.get(i).getScore(),
+                            allMatch.get(i).getBest_of(),
+                            allMatch.get(i).getRound(),
+                            allMatch.get(i).getMinutes(),
+                            allMatch.get(i).getW_ace(),
+                            allMatch.get(i).getW_df(),
+                            allMatch.get(i).getW_svpt(),
+                            allMatch.get(i).getW_1st_in(),
+                            allMatch.get(i).getW_1st_won(),
+                            allMatch.get(i).getW_2nd_won(),
+                            allMatch.get(i).getW_sv_gms(),
+                            allMatch.get(i).getW_bp_saved(),
+                            allMatch.get(i).getW_bp_faced(),
+                            allMatch.get(i).getL_ace(),
+                            allMatch.get(i).getL_df(),
+                            allMatch.get(i).getL_svpt(),
+                            allMatch.get(i).getL_1st_in(),
+                            allMatch.get(i).getL_1st_won(),
+                            allMatch.get(i).getL_2nd_won(),
+                            allMatch.get(i).getL_sv_gms(),
+                            allMatch.get(i).getL_bp_saved(),
+                            allMatch.get(i).getL_bp_faced(),
+                            allMatch.get(i).getWinner_rank(),
+                            allMatch.get(i).getWinner_rank_points(),
+                            allMatch.get(i).getLoser_rank(),
+                            allMatch.get(i).getLoser_rank_points(),
+                            allMatch.get(i).getWinnerPlayer(),
+                            allMatch.get(i).getLoserPlayer(),
+                            tourney
+                    );
+                    rangeMatch.add(match);
+                }
+            }
+        }
+        return rangeMatch;
+    }
+
+    public List<Tourney> getDateRangeTourney(String date_start,String date_end) throws ParseException {
+        List<Tourney> allTourney = (List<Tourney>) tourneyRepository.findAll();
+        List<Tourney> rangeTourney = new ArrayList<>();
+        if(!allTourney.isEmpty()){
+            for(int i = 0; i < allTourney.size(); i++){
+                if( CommonHelper.compareTwoDate(date_start,date_end,allTourney.get(i).getTourney_date())){
+                    rangeTourney.add(allTourney.get(i));
+                }
+            }
+        }
+        return rangeTourney;
+    }
+
+    public List<Player> getDateBirthRangePlayer(String date_start,String date_end) throws ParseException {
+        List<Player> allPlayer = (List<Player>) playerRepository.findAll();
+        List<Player> rangePlayer = new ArrayList<>();
+        if(!allPlayer.isEmpty()){
+            for(int i = 0; i < allPlayer.size(); i++){
+                if( CommonHelper.compareTwoDate(date_start,date_end,allPlayer.get(i).getBirth_date())){
+                    rangePlayer.add(allPlayer.get(i));
+                }
+            }
+        }
+        return rangePlayer;
+    }
+
 
 }

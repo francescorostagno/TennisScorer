@@ -26,7 +26,6 @@ public class Player implements Serializable {
     @Column(name =  "`hand`")
     private String hand;
 
-
     @Column(name =  "`birth_date`")
     private String birth_date;
 

@@ -183,6 +183,51 @@
 
 </div>
 
+<div ng-controller="HomeController" class="searchType hide" id="dateRangeTourney">
+    <form ng-submit="submitDateRangeTourney()" >
+        <label for="dateStartRangeTourneyLabel" >Date Start: </label>
+        <input type="text" id="dateStartRangeTourneyLabel" ng-model="dateStartRangeTourney" />
+        <label for="dateEndRangeTourneyLabel" >Player Name: </label>
+        <input type="text" id="dateEndRangeTourneyLabel" ng-model="dateEndRangeTourney" />
+        <button ng-submit="submit"></button>
+    </form>
+    <div ng-show="dateRangeTourneyArray.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar" >
+        <table class="table table-bordered table-striped mb-0" id="dateRangeTourneyTable" >
+            <thead>
+            <tr>
+                <th class="th-sm">Tourney Name: </th>
+                <th class="th-sm">Winner Player: </th>
+                <th class="th-sm">Loser Player: </th>
+                <th class="th-sm">Tourney Data: </th>
+                <th class="th-sm">Level: </th>
+                <th class="th-sm">Surface: </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" drt in dateRangeTourneyArray">
+            <tr>
+                <td>{{ drt.tourneyName}}</td>
+                <td>
+                    {{ drt.winnerName}}
+                </td>
+                <td>
+                    {{ drt.loserName}}
+                </td>
+                <td>
+                    {{ drt.tourneyDate}}
+                </td>
+                <td>
+                    {{ drt.surface}}
+                </td>
+                <td>
+                    {{ drt.level}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
 
 <script>
     $(document).ready(function() {

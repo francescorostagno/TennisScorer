@@ -6,6 +6,7 @@ import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Tourney;
 import com.tennisscorer.repository.TourneyRepository;
 import com.tennisscorer.service.CommonService;
+import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -165,5 +166,47 @@ public class CommonController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/get_date_range_ranking")
+    public ResponseEntity<List<Ranking>> getDateRangeRanking(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
+        try {
+            List<Ranking> rankings = commonService.getDateRangeRanking(date_start,date_end);
+            return new ResponseEntity<>(rankings, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/get_date_range_match")
+    public ResponseEntity<List<Match>> getDateRangeMatch(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
+        try {
+            List<Match> matches = commonService.getDateRangeMatch(date_start,date_end);
+            return new ResponseEntity<>(matches, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/get_date_range_tourney")
+    public ResponseEntity<List<Tourney>> getDateRangeTourney(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
+        try {
+            List<Tourney> tourneys = commonService.getDateRangeTourney(date_start,date_end);
+            return new ResponseEntity<>(tourneys, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/get_date_birth_range_player")
+    public ResponseEntity<List<Player>> getDateBirthRangePlayer(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
+        try {
+            List<Player> players = commonService.getDateBirthRangePlayer(date_start,date_end);
+            return new ResponseEntity<>(players, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 }

@@ -25,7 +25,13 @@ angular.module('Home')
             },
             {
                 value:'rankingPlayer', displayName: 'Search Player Ranking'
+            },
+            {
+                value: 'dateRangeTourney' , displayName: 'Search Tourney Between Date'
+            },{
+                value: 'dateBirthRangePlayer' , displayName: 'Search Player Between Date'
             }
+
         ]
 
         $scope.uploadFile = function() {
@@ -68,9 +74,59 @@ angular.module('Home')
         }
 
         $scope.submitPlayerRanking = function(){
-            var uploadUrl = 'api/common/player_ranking'
+            var uploadUrl = 'api/common/player_ranking';
             $scope.submitPlayerRankingToUrl($scope.playerNameRanking,uploadUrl);
         }
+
+        $scope.submitDateRangeTourney = function (){
+            var uploadUrl = 'api/common/get_date_range_tourney';
+            $scope.submitDateRangeTourneyToUrl($scope.dateStartRangeTourney,$scope.dateEndRangeTourney,uploadUrl);
+        }
+
+        $scope.submitDateBirthRangePlayer = function (){
+            var uploadUrl = 'api/common/get_date_birth_range_player';
+            $scope.submitDateBirthRangePlayerToUrl($scope.dateStartRangeBirthPlayer,$scope.dateStartRangeBirthPlayer,uploadUrl);
+        }
+
+        $scope.submitDateRangeTourneyToUrl = function (dateStart,dateEnd,uploadUrl){
+            var data = new FormData();
+            data.append('date_start', dateStart);
+            data.append('date_start', dateEnd);
+            $http.post(uploadUrl,data,{
+                withCredentials : false,
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }}).then(function (response){
+                if( response.status === 200){
+                    $scope.dateRangeTourneyArray = [];
+                    if(response.data){
+                        for(var i = 0; i < response.data.length ; i++){
+                            var yy = response.data[i].tourney_date.slice(0,4);
+                            var mm = response.data[i].tourney_date.slice(5,6);
+                            var dd = response.data[i].tourney_date.slice(7,8);
+                            var tourney = {
+                                'tourneyName' : response.data[i].tourneyName,
+                                'tourneyData': dd + ':' + mm + ':' + yy,
+                                'winnerName' : response.data[i].winnerName,
+                                'loserName' : response.data[i].loserName,
+                                'surface': response.data[i].surface,
+                                'level' : response.data[i].level,
+                            }
+                            $scope.dateRangeTourneyArray.push(tourney)
+                        }
+                    }
+                }
+            })
+        }
+
+        $scope.submitDateBirthRangePlayerToUrl = function (dateStart,dateEnd,uploadUrl){
+            var data = new FormData();
+            data.append('date_start', dateStart);
+            data.append('date_start', dateEnd);
+        }
+
+
 
         $scope.submitPlayerRankingToUrl = function (playerNameRanking,uploadUrl){
             var data = new FormData();
