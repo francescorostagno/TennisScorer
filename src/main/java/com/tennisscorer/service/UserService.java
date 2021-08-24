@@ -32,14 +32,14 @@ public class UserService {
      * @param role - the user role
      */
     @Transactional
-    public void createUser(String username, String email, String password, String role) {
+    public User createUser(String username, String email, String password, String role) {
         if (!userRepository.isUsernameAvailable(username)) {
             throw new IllegalArgumentException("The username is not available.");
         }
-        role = "USER";
         User user = new User(username, MD5.getMd5(password), email, role );
 
         userRepository.save(user);
+        return user;
     }
 
 

@@ -30,6 +30,16 @@ public class UserController {
         userService.createUser(user.getUsername(), user.getEmail(), user.getPassword(), user.getRole());
     }*/
 
+    @PostMapping("/create_user")
+    public ResponseEntity<User> createUser(@RequestParam("username")String username,@RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("role") String role, HttpServletResponse response ){
+        User user = userService.createUser(username,email,password,role);
+        if(user != null){
+            return new ResponseEntity<User>(user,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/authenticate")
     public ResponseEntity<User>  authenticate(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, HttpServletResponse response){
         User user = userService.authenticate(username,password);

@@ -34,6 +34,12 @@ angular.module('Home')
 
         ]
 
+        $scope.createUser = function (){
+            $scope.clearScope();
+            var uploadUrl = "login/create_user";
+            $scope.createUserToUrl($scope.newUsername,$scope.newPassword,$scope.newEmail,uploadUrl)
+        }
+
         $scope.uploadFile = function() {
             var file = $scope.myFile;
             console.log('file is ' );
@@ -54,6 +60,7 @@ angular.module('Home')
             $scope.submitPlayerToUrl($scope.playerName,uploadUrl)
 
         }
+
         $scope.submitTourney = function (){
             $scope.clearScope();
             var uploadUrl = "api/common/tourney";
@@ -86,6 +93,24 @@ angular.module('Home')
         $scope.submitDateBirthRangePlayer = function (){
             var uploadUrl = 'api/common/get_date_birth_range_player';
             $scope.submitDateBirthRangePlayerToUrl($scope.dateStartRangeBirthPlayer,$scope.dateStartRangeBirthPlayer,uploadUrl);
+        }
+
+        $scope.createUserToUrl = function (username,password,email,uploadUrl){
+            var data = new FormData();
+            data.append('username', username);
+            data.append('password', password);
+            data.append('email', email);
+            data.append('role',"USER");
+            $http.post(uploadUrl,data,{
+                withCredentials : false,
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }}).then(function (response){
+                if( response.status === 200){
+                    $location.path('');
+                }
+            })
         }
 
         $scope.submitDateRangeTourneyToUrl = function (dateStart,dateEnd,uploadUrl){
@@ -125,8 +150,6 @@ angular.module('Home')
             data.append('date_start', dateStart);
             data.append('date_start', dateEnd);
         }
-
-
 
         $scope.submitPlayerRankingToUrl = function (playerNameRanking,uploadUrl){
             var data = new FormData();

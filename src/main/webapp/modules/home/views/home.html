@@ -5,20 +5,36 @@
     <a class="navbar-brand" href="#/login">Logout</a></a>
 </nav>
 <br>
-<label>
-    <select class="js-example-basic-single" name="searchType" style="width: 200px" >
-        <option></option>
-        <option ng-repeat="s in searchValue" value="{{ s.value }}">
-            {{ s.displayName }}
-        </option>
-    </select>
-</label>
+<div ng-controller = "HomeController" ng-hide="role == 'user'">
+    <h2>Create User:</h2>
+    <label for="newUsername" >Username: </label>
+    <input type="text" id="newUsername" ng-model="newUsername" />
+    <label for="newPassword" >Password: </label>
+    <input type="password" id="newPassword" ng-model="newPassword" />
+    <label for="newEmail" >Email: </label>
+    <input type="email" id="newEmail" ng-model="newEmail" />
+    <button ng-click = "createUser()">Create User</button>
+</div>
 <br>
 <br>
 <div ng-controller = "HomeController" ng-hide="role == 'user'">
     <input type = "file" file-model = "myFile"/>
     <button ng-click = "uploadFile()">upload me</button>
 </div>
+<br>
+<br>
+<div>
+    <h2>Search</h2>
+    <label>
+        <select class="js-example-basic-single" name="searchType" style="width: 200px" >
+            <option></option>
+            <option ng-repeat="s in searchValue" value="{{ s.value }}">
+                {{ s.displayName }}
+            </option>
+        </select>
+    </label>
+</div>
+
 <br>
 <div  ng-controller="HomeController" class="searchType hide" id="playerName">
     <form ng-submit="submitPlayer()" >
