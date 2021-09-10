@@ -4,7 +4,7 @@ import com.tennisscorer.dto.*;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Ranking;
 import com.tennisscorer.model.Tourney;
-import com.tennisscorer.repository.TourneyRepository;
+
 import com.tennisscorer.service.CommonService;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/common")
 public class CommonController {
-    @Autowired
-    TourneyRepository tourneyRepository;
 
     @Autowired
     CommonService commonService;
@@ -51,7 +49,7 @@ public class CommonController {
         }
     }
 
-    @GetMapping("/match")
+    @PostMapping("/match")
     public ResponseEntity<List<Match>> getAllMatch(){
         try {
             List<Match> tennisMatches = commonService.getAllMatch();

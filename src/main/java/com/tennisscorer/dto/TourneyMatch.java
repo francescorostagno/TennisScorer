@@ -4,13 +4,13 @@ import com.tennisscorer.model.Player;
 
 public class TourneyMatch {
 
-    public Player winnerPlayer;
-    public Player loserPlayer;
+    public String winnerPlayer;
+    public String loserPlayer;
     public String score;
     public Integer match_num;
     public MatchStatistics matchStatistics;
 
-    public TourneyMatch(Player winnerPlayer, Player loserPlayer, String score, Integer match_num, MatchStatistics matchStatistics, String match_date) {
+    public TourneyMatch(String winnerPlayer, String loserPlayer, String score, Integer match_num, MatchStatistics matchStatistics, String match_date) {
         this.winnerPlayer = winnerPlayer;
         this.loserPlayer = loserPlayer;
         this.score = score;
@@ -26,19 +26,19 @@ public class TourneyMatch {
     public void setMatchStatistics(MatchStatistics matchStatistics) {
         this.matchStatistics = matchStatistics;
     }
-    public Player getWinnerPlayer() {
+    public String getWinnerPlayer() {
         return winnerPlayer;
     }
 
-    public void setWinnerPlayer(Player winnerPlayer) {
+    public void setWinnerPlayer(String winnerPlayer) {
         this.winnerPlayer = winnerPlayer;
     }
 
-    public Player getLoserPlayer() {
+    public String getLoserPlayer() {
         return loserPlayer;
     }
 
-    public void setLoserPlayer(Player loserPlayer) {
+    public void setLoserPlayer(String loserPlayer) {
         this.loserPlayer = loserPlayer;
     }
 

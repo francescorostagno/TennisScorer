@@ -100,7 +100,7 @@ angular.module('Home')
             data.append('username', username);
             data.append('password', password);
             data.append('email', email);
-            data.append('role',"USER");
+            data.append('role',"user");
             $http.post(uploadUrl,data,{
                 withCredentials : false,
                 transformRequest : angular.identity,

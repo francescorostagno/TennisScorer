@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface PlayerRepository <<CrudRepository>>{
+     Boolean existsPlayerByPlayerName(String player_name)
+     Player findByPlayerId(Long player_id)
+     Player findByPlayerName(String player_name)
+}
+
+interface RankingRepository<<CrudRepository>>{
+    Boolean existsByPlayerIdAndRankingDate(Long player_id, String ranking_date)
+    List<Ranking> findAllByPlayerId(Long player_id)
+    List<Ranking> findAllByRankingDate(String ranking_date)
+}
+
+interface StatisticsRepository<<CrudRepository>>{
+     Boolean existsStatisticsByTourneyIdAndMatchNum(String tourney_id, int match_num)
+     List<Statistics> findAllByTourneyId(String tourney_id)
+     Statistics findByTourneyIdAndMatchNum(String tourney_id, int match_num)
+     List<Statistics> findAllByWinnerName(String winner_name)
+     List<Statistics> findAllByLoserName(String looser_name)
+}
+
+interface TourneyRepository<<CrudRepository>>{
+    Boolean existsTourneyByTourneyId(String tourney_id)
+    Tourney findTourneyByTourneyId(String tourney_id)
+    List<Tourney> findAllByTourneyName(String tourney_name)
+    List<Tourney> findAllByWinnerPlayer(Player winnerPlayer)
+}
+
+
+
+@enduml

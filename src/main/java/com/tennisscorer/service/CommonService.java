@@ -146,8 +146,8 @@ public class CommonService {
         if(!tennisMatches.isEmpty()){
             for (int i = 0; i < tennisMatches.size(); i++){
                 TourneyMatch  tourneyMatch = new TourneyMatch(
-                        tennisMatches.get(i).getWinnerPlayer(),
-                        tennisMatches.get(i).getLoserPlayer(),
+                        tennisMatches.get(i).getWinnerName(),
+                        tennisMatches.get(i).getLoserName(),
                         tennisMatches.get(i).getScore(),
                         tennisMatches.get(i).getMatchNum(),
                         getMatchStatistics(tourney_id,tennisMatches.get(i).getMatchNum()),
@@ -215,10 +215,7 @@ public class CommonService {
                         statisticsList.get(i).getWinner_rank(),
                         statisticsList.get(i).getWinner_rank_points(),
                         statisticsList.get(i).getLoser_rank(),
-                        statisticsList.get(i).getLoser_rank_points(),
-                        statisticsList.get(i).getWinnerPlayer(),
-                        statisticsList.get(i).getLoserPlayer(),
-                        tourney
+                        statisticsList.get(i).getLoser_rank_points()
                 );
                 matchList.add(match);
             }
@@ -296,10 +293,7 @@ public class CommonService {
                             allMatch.get(i).getWinner_rank(),
                             allMatch.get(i).getWinner_rank_points(),
                             allMatch.get(i).getLoser_rank(),
-                            allMatch.get(i).getLoser_rank_points(),
-                            allMatch.get(i).getWinnerPlayer(),
-                            allMatch.get(i).getLoserPlayer(),
-                            tourney
+                            allMatch.get(i).getLoser_rank_points()
                     );
                     rangeMatch.add(match);
                 }
