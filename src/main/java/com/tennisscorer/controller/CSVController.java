@@ -21,7 +21,7 @@ public class CSVController {
     @Autowired
     CSVService fileService;
 
-    @PostMapping("/upload")
+    @PostMapping("/upload" )
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @CookieValue("ROLE") String role) {
         String message = "";
         if (CSVHelper.hasCSVFormat(file) && role.contains("admin")) {

@@ -27,12 +27,43 @@ public class CommonService {
     @Autowired
     com.tennisscorer.repository.RankingRepository rankingRepository;
 
-    public List<Tourney> getTourneyByName(String tourney_name){
-        return tourneyRepository.findAllByTourneyName(tourney_name);
+    public List<TourneyDTO> getTourneyByName(String tourney_name){
+        List<TourneyDTO> tourneysDTO = new ArrayList<>();
+        List<Tourney> tourneys = tourneyRepository.findAllByTourneyName(tourney_name);
+        if(tourneys != null){
+            for(int i = 0; i < tourneys.size(); i++){
+                TourneyDTO tourneyDTO = new TourneyDTO(
+                        tourneys.get(i).getTourney_id(),
+                        tourneys.get(i).getTourneyName(),
+                        tourneys.get(i).getTourney_date(),
+                        tourneys.get(i).getDraw_size(),
+                        tourneys.get(i).getLevel(),
+                        tourneys.get(i).getSurface(),
+                        tourneys.get(i).getWinnerName(),
+                        tourneys.get(i).getLoserName(),
+                        tourneys.get(i).getMatch_num()
+                );
+                tourneysDTO.add(tourneyDTO);
+            }
+        }
+        return tourneysDTO;
     }
 
-    public Player getPlayerByName(String player_name){
-        return  playerRepository.findByPlayerName(player_name);
+    public PlayerDTO getPlayerByName(String player_name){
+        Player player = playerRepository.findByPlayerName(player_name);
+
+        if(player != null){
+            return new PlayerDTO(
+                    player.getPlayerId(),
+                    player.getPlayerName(),
+                    player.getHand(),
+                    player.getBirth_date(),
+                    player.getCountry_code()
+            );
+        }else{
+            return null;
+        }
+
     }
 
     public MatchStatistics getMatchStatistics(String tourney_id, Integer match_num){
@@ -63,14 +94,24 @@ public class CommonService {
                 );
     }
 
-    public List<Ranking> getPlayerRanking(String player_name) {
+    public List<RankingDTO> getPlayerRanking(String player_name) {
         Player player = playerRepository.findByPlayerName(player_name);
-        List<Ranking> ranking = null;
+        List<RankingDTO> rankingsDTO = new ArrayList<>();
         if (player != null) {
-            ranking = rankingRepository.findAllByPlayerId(player.getPlayerId());
-
+            List<Ranking> ranking = rankingRepository.findAllByPlayerId(player.getPlayerId());
+            if(!ranking.isEmpty()){
+                for(int i = 0; i < ranking.size(); i++){
+                   RankingDTO rankingDTO = new RankingDTO(
+                            ranking.get(i).getRankingDate(),
+                            ranking.get(i).getRank(),
+                            ranking.get(i).getPlayer_id(),
+                            ranking.get(i).getPoints()
+                   );
+                   rankingsDTO.add(rankingDTO);
+                }
+            }
         }
-        return ranking;
+        return rankingsDTO;
     }
 
     public List<PlayerMatch> getPlayerMatch(String player_name){
@@ -130,14 +171,46 @@ public class CommonService {
     }
 
 
-    public List<Tourney> getAllTourney(){
-        return (List<Tourney>) tourneyRepository.findAll();
+    public List<TourneyDTO> getAllTourney(){
+        List<TourneyDTO> tourneysDTO = new ArrayList<>();
+        List<Tourney> tourneys = (List<Tourney>) tourneyRepository.findAll();
+        for ( int i = 0; i < tourneys.size(); i++){
+            TourneyDTO tourneyDTO = new TourneyDTO(
+                    tourneys.get(i).getTourney_id(),
+                    tourneys.get(i).getTourneyName(),
+                    tourneys.get(i).getTourney_date(),
+                    tourneys.get(i).getDraw_size(),
+                    tourneys.get(i).getLevel(),
+                    tourneys.get(i).getSurface(),
+                    tourneys.get(i).getWinnerName(),
+                    tourneys.get(i).getLoserName(),
+                    tourneys.get(i).getMatch_num()
+            );
+            tourneysDTO.add(tourneyDTO);
+        }
+        return tourneysDTO;
     }
 
-
-    public List<Tourney> getAllPlayerWinnerTourney(String playerName){
+    public List<TourneyDTO> getAllPlayerWinnerTourney(String playerName){
         List<Tourney> winnerTourneys = tourneyRepository.findAllByWinnerPlayer(playerRepository.findByPlayerName(playerName));
-        return winnerTourneys;
+        List<TourneyDTO> tourneysDTO = new ArrayList<>();
+        if( !winnerTourneys.isEmpty()){
+            for (int i = 0; i < tourneysDTO.size(); i++){
+                TourneyDTO tourneyDTO = new TourneyDTO(
+                        tourneysDTO.get(i).getTourney_id(),
+                        tourneysDTO.get(i).getTourneyName(),
+                        tourneysDTO.get(i).getTourney_date(),
+                        tourneysDTO.get(i).getDraw_size(),
+                        tourneysDTO.get(i).getLevel(),
+                        tourneysDTO.get(i).getSurface(),
+                        tourneysDTO.get(i).getWinnerName(),
+                        tourneysDTO.get(i).getLoserName(),
+                        tourneysDTO.get(i).getMatch_num()
+                );
+                tourneysDTO.add(tourneyDTO);
+            }
+        }
+        return tourneysDTO;
     }
 
     public List<TourneyMatch> getAllTourneyMatch(String tourney_id){
@@ -224,20 +297,32 @@ public class CommonService {
         return matchList;
     }
 
-    public List<Ranking> getDateRangeRanking(String date_start,String date_end) throws ParseException {
+    public List<RankingDTO> getDateRangeRanking(String date_start,String date_end) throws ParseException {
         List<Ranking> allRankings = (List<Ranking>) rankingRepository.findAll();
         List<Ranking> rangeRankings = new ArrayList<>();
+        List<RankingDTO> rangeRankingsDTO = new ArrayList<>();
         if(!allRankings.isEmpty()){
             for(int i = 0; i < allRankings.size(); i++){
                 if( CommonHelper.compareTwoDate(date_start,date_end,allRankings.get(i).getRankingDate())){
                     rangeRankings.add(allRankings.get(i));
                 }
             }
+            if(!rangeRankings.isEmpty()){
+                for (int i = 0; i < rangeRankings.size(); i++){
+                    RankingDTO rankingDTO = new RankingDTO(
+                            rangeRankings.get(i).getRankingDate(),
+                            rangeRankings.get(i).getRank(),
+                            rangeRankings.get(i).getPlayer_id(),
+                            rangeRankings.get(i).getPoints()
+                    );
+                    rangeRankingsDTO.add(rankingDTO);
+                }
+            }
         }
-        return rangeRankings;
+        return rangeRankingsDTO;
     }
 
-    public List<Match> getDateRangeMatch(String date_start,String date_end) throws ParseException {
+    public List<Match> getDateRangeMatch(String date_start,String date_end) {
         List<Statistics> allMatch = (List<Statistics>) statisticsRepository.findAll();
         List<Match> rangeMatch = new ArrayList<>();
         if(!allMatch.isEmpty()){
@@ -302,30 +387,63 @@ public class CommonService {
         return rangeMatch;
     }
 
-    public List<Tourney> getDateRangeTourney(String date_start,String date_end) throws ParseException {
+    public List<TourneyDTO> getDateRangeTourney(String date_start,String date_end) throws ParseException {
         List<Tourney> allTourney = (List<Tourney>) tourneyRepository.findAll();
         List<Tourney> rangeTourney = new ArrayList<>();
+        List<TourneyDTO> rangeTourneysDTO = new ArrayList<>();
+
         if(!allTourney.isEmpty()){
             for(int i = 0; i < allTourney.size(); i++){
                 if( CommonHelper.compareTwoDate(date_start,date_end,allTourney.get(i).getTourney_date())){
                     rangeTourney.add(allTourney.get(i));
                 }
             }
+            if(!rangeTourney.isEmpty()){
+                for (int i = 0; i < rangeTourney.size(); i++){
+                    TourneyDTO tourneyDTO = new TourneyDTO(
+                            rangeTourney.get(i).getTourney_id(),
+                            rangeTourney.get(i).getTourneyName(),
+                            rangeTourney.get(i).getTourney_date(),
+                            rangeTourney.get(i).getDraw_size(),
+                            rangeTourney.get(i).getLevel(),
+                            rangeTourney.get(i).getSurface(),
+                            rangeTourney.get(i).getWinnerName(),
+                            rangeTourney.get(i).getLoserName(),
+                            rangeTourney.get(i).getMatch_num()
+                    );
+
+                    rangeTourneysDTO.add(tourneyDTO);
+                }
+
+            }
         }
-        return rangeTourney;
+        return rangeTourneysDTO;
     }
 
-    public List<Player> getDateBirthRangePlayer(String date_start,String date_end) throws ParseException {
+    public List<PlayerDTO> getDateBirthRangePlayer(String date_start,String date_end) throws ParseException {
         List<Player> allPlayer = (List<Player>) playerRepository.findAll();
         List<Player> rangePlayer = new ArrayList<>();
+        List<PlayerDTO> rangePlayersDTO = new ArrayList<>();
         if(!allPlayer.isEmpty()){
             for(int i = 0; i < allPlayer.size(); i++){
                 if( CommonHelper.compareTwoDate(date_start,date_end,allPlayer.get(i).getBirth_date())){
                     rangePlayer.add(allPlayer.get(i));
                 }
             }
+            if(!rangePlayer.isEmpty()){
+                for (int i = 0; i < rangePlayer.size(); i++){
+                    PlayerDTO playerDTO = new PlayerDTO(
+                            rangePlayer.get(i).getPlayerId(),
+                            rangePlayer.get(i).getPlayerName(),
+                            rangePlayer.get(i).getHand(),
+                            rangePlayer.get(i).getBirth_date(),
+                            rangePlayer.get(i).getCountry_code()
+                    );
+                    rangePlayersDTO.add(playerDTO);
+                }
+            }
         }
-        return rangePlayer;
+        return rangePlayersDTO;
     }
 
 
