@@ -1,6 +1,6 @@
 package com.tennisscorer.dto;
 
-public class PlayerMatch {
+public class PlayerMatchDTO {
 
     public String tourney_name;
     public String score;
@@ -26,7 +26,7 @@ public class PlayerMatch {
         return player_vs;
     }
 
-    public PlayerMatch(String tourney_name, String score, String player_vs, Integer win_or_loose) {
+    public PlayerMatchDTO(String tourney_name, String score, String player_vs, Integer win_or_loose) {
         this.tourney_name = tourney_name;
         this.score = score;
         this.player_vs = player_vs;

@@ -1,6 +1,6 @@
 package com.tennisscorer.dto;
 
-public class MatchStatistics {
+public class MatchStatisticsDTO {
 
     public Integer w_ace;
     public Integer w_df;
@@ -18,7 +18,7 @@ public class MatchStatistics {
         return w_ace;
     }
 
-    public MatchStatistics(Integer w_ace, Integer w_df, Integer w_svpt, Integer w_1st_in, Integer w_1st_won, Integer w_2nd_won, Integer w_sv_gms, Integer w_bp_saved, Integer w_bp_faced, Integer l_ace, Integer l_df, Integer l_svpt, Integer l_1st_in, Integer l_1st_won, Integer l_2nd_won, Integer l_sv_gms, Integer l_bp_saved, Integer l_bp_faced, Integer winner_rank, Integer winner_rank_points, Integer loser_rank, Integer loser_rank_points) {
+    public MatchStatisticsDTO(Integer w_ace, Integer w_df, Integer w_svpt, Integer w_1st_in, Integer w_1st_won, Integer w_2nd_won, Integer w_sv_gms, Integer w_bp_saved, Integer w_bp_faced, Integer l_ace, Integer l_df, Integer l_svpt, Integer l_1st_in, Integer l_1st_won, Integer l_2nd_won, Integer l_sv_gms, Integer l_bp_saved, Integer l_bp_faced, Integer winner_rank, Integer winner_rank_points, Integer loser_rank, Integer loser_rank_points) {
         this.w_ace = w_ace;
         this.w_df = w_df;
         this.w_svpt = w_svpt;

@@ -18,4 +18,5 @@ public interface PlayerRepository extends CrudRepository<Player,Long>{
 
     )
     List<String> getPlayerTerm(String term);
+    List<Player> findByBirthDateBetweenOrderByBirthDateDesc(String startDate, String endDate);
 }

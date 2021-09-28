@@ -4,7 +4,7 @@ package com.tennisscorer.dto;
 import com.tennisscorer.model.Player;
 import com.tennisscorer.model.Tourney;
 
-public class Match {
+public class MatchDTO {
     private String tourneyId;
 
     private String tourney_name;
@@ -104,11 +104,11 @@ public class Match {
     private int loser_rank_points;
 
 
-    public Match() {
+    public MatchDTO() {
 
     }
 
-    public Match(String tourneyId, String tourney_name, String surface, long draw_size, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winner_rank_points, int loser_rank, int loser_rank_points) {
+    public MatchDTO(String tourneyId, String tourney_name, String surface, long draw_size, String tourney_level, String tourney_date, int matchNum, long winner_id, int winner_seed, String winner_entry, String winnerName, String winner_hand, int winner_ht, String winner_ioc, double winner_age, long loser_id, int loser_seed, String loser_entry, String loserName, String loser_hand, String loser_ioc, int loser_ht, double loser_age, String score, int best_of, String round, int minutes, int w_ace, int w_df, int w_svpt, int w_1st_in, int w_1st_won, int w_2nd_won, int w_sv_gms, int w_bp_saved, int w_bp_faced, int l_ace, int l_df, int l_svpt, int l_1st_in, int l_1st_won, int l_2nd_won, int l_sv_gms, int l_bp_saved, int l_bp_faced, int winner_rank, int winner_rank_points, int loser_rank, int loser_rank_points) {
         this.tourneyId = tourneyId;
         this.tourney_name = tourney_name;
         this.surface = surface;

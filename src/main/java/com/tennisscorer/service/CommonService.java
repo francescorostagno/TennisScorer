@@ -35,7 +35,7 @@ public class CommonService {
                 TourneyDTO tourneyDTO = new TourneyDTO(
                         tourneys.get(i).getTourney_id(),
                         tourneys.get(i).getTourneyName(),
-                        tourneys.get(i).getTourney_date(),
+                        tourneys.get(i).getTourneyDate(),
                         tourneys.get(i).getDraw_size(),
                         tourneys.get(i).getLevel(),
                         tourneys.get(i).getSurface(),
@@ -57,7 +57,7 @@ public class CommonService {
                     player.getPlayerId(),
                     player.getPlayerName(),
                     player.getHand(),
-                    player.getBirth_date(),
+                    player.getBirthDate(),
                     player.getCountry_code()
             );
         }else{
@@ -66,9 +66,9 @@ public class CommonService {
 
     }
 
-    public MatchStatistics getMatchStatistics(String tourney_id, Integer match_num){
+    public MatchStatisticsDTO getMatchStatistics(String tourney_id, Integer match_num){
         Statistics tennisMatch = statisticsRepository.findByTourneyIdAndMatchNum(tourney_id,match_num);
-        return new MatchStatistics(
+        return new MatchStatisticsDTO(
                 tennisMatch.getW_ace(),
                 tennisMatch.getW_df(),
                 tennisMatch.getW_svpt(),
@@ -114,56 +114,56 @@ public class CommonService {
         return rankingsDTO;
     }
 
-    public List<PlayerMatch> getPlayerMatch(String player_name){
+    public List<PlayerMatchDTO> getPlayerMatch(String player_name){
         List<Statistics> tennisMatchesWinner = statisticsRepository.findAllByWinnerName(player_name);
-        List<PlayerMatch> allPlayerMatch = new ArrayList<>();
+        List<PlayerMatchDTO> allPlayerMatchDTOS = new ArrayList<>();
         if(tennisMatchesWinner != null){
             for( int i = 0; i < tennisMatchesWinner.size(); i ++){
-                PlayerMatch playerMatch = new PlayerMatch(
+                PlayerMatchDTO playerMatchDTO = new PlayerMatchDTO(
                         tennisMatchesWinner.get(i).getTourney().getTourneyName(),
                         tennisMatchesWinner.get(i).getScore(),
                         tennisMatchesWinner.get(i).getLoserName(),
                         1
                 );
-                allPlayerMatch.add(playerMatch);
+                allPlayerMatchDTOS.add(playerMatchDTO);
             }
         }
         List<Statistics> tennisMatchesLoser = statisticsRepository.findAllByLoserName(player_name);
         if(tennisMatchesLoser != null){
             for(int i = 0; i < tennisMatchesLoser.size(); i ++){
-                PlayerMatch playerMatch = new PlayerMatch(
+                PlayerMatchDTO playerMatchDTO = new PlayerMatchDTO(
                         tennisMatchesLoser.get(i).getTourney().getTourneyName(),
                         tennisMatchesLoser.get(i).getScore(),
                         tennisMatchesLoser.get(i).getWinnerName(),
                         0
                 );
 
-                allPlayerMatch.add(playerMatch);
+                allPlayerMatchDTOS.add(playerMatchDTO);
             }
         }
 
-        return allPlayerMatch;
+        return allPlayerMatchDTOS;
     }
 
-    public List<GoldenRegister> getTourneyGoldenRegister(String tourney_name){
+    public List<GoldenRegisterDTO> getTourneyGoldenRegister(String tourney_name){
             List<Tourney> tourneys = tourneyRepository.findAllByTourneyName(tourney_name);
-            List<GoldenRegister> goldenRegisters = new ArrayList<>();
+            List<GoldenRegisterDTO> goldenRegisterDTOS = new ArrayList<>();
             if(!tourneys.isEmpty()){
                 for(int i = 0; i < tourneys.size(); i++){
-                    GoldenRegister goldenResister = new GoldenRegister(
+                    GoldenRegisterDTO goldenResister = new GoldenRegisterDTO(
                             tourney_name,
                             tourneys.get(i).getSurface(),
-                            tourneys.get(i).getTourney_date(),
+                            tourneys.get(i).getTourneyDate(),
                             tourneys.get(i).getWinnerName(),
                             tourneys.get(i).getLoserName(),
                             tourneys.get(i).getWinnerPlayer(),
                             tourneys.get(i).getLoserPlayer()
                     );
-                    goldenRegisters.add(goldenResister);
+                    goldenRegisterDTOS.add(goldenResister);
                 }
             }
 
-            return goldenRegisters;
+            return goldenRegisterDTOS;
     }
 
     public List<String> autocompletePlayer(String term){
@@ -178,7 +178,7 @@ public class CommonService {
             TourneyDTO tourneyDTO = new TourneyDTO(
                     tourneys.get(i).getTourney_id(),
                     tourneys.get(i).getTourneyName(),
-                    tourneys.get(i).getTourney_date(),
+                    tourneys.get(i).getTourneyDate(),
                     tourneys.get(i).getDraw_size(),
                     tourneys.get(i).getLevel(),
                     tourneys.get(i).getSurface(),
@@ -213,39 +213,39 @@ public class CommonService {
         return tourneysDTO;
     }
 
-    public List<TourneyMatch> getAllTourneyMatch(String tourney_id){
-        List<TourneyMatch> tourneyMatches = new ArrayList<>();
+    public List<TourneyMatchDTO> getAllTourneyMatch(String tourney_id){
+        List<TourneyMatchDTO> tourneyMatchDTOS = new ArrayList<>();
         List<Statistics> tennisMatches = statisticsRepository.findAllByTourneyId(tourney_id);
         if(!tennisMatches.isEmpty()){
             for (int i = 0; i < tennisMatches.size(); i++){
-                TourneyMatch  tourneyMatch = new TourneyMatch(
+                TourneyMatchDTO tourneyMatchDTO = new TourneyMatchDTO(
                         tennisMatches.get(i).getWinnerName(),
                         tennisMatches.get(i).getLoserName(),
                         tennisMatches.get(i).getScore(),
                         tennisMatches.get(i).getMatchNum(),
                         getMatchStatistics(tourney_id,tennisMatches.get(i).getMatchNum()),
-                        tennisMatches.get(i).getTourney().getTourney_date()
+                        tennisMatches.get(i).getTourney().getTourneyDate()
                 );
 
-                tourneyMatches.add(tourneyMatch);
+                tourneyMatchDTOS.add(tourneyMatchDTO);
             }
         }
-        return tourneyMatches;
+        return tourneyMatchDTOS;
     }
 
-    public List<Match> getAllMatch(){
+    public List<MatchDTO> getAllMatch(){
         List<Statistics> statisticsList = (List<Statistics>) statisticsRepository.findAll();
-        List<Match> matchList = new ArrayList<>();
+        List<MatchDTO> matchDTOList = new ArrayList<>();
         if( !statisticsList.isEmpty()){
             for(int i = 0; i < statisticsList.size(); i ++){
                 Tourney tourney = statisticsList.get(i).getTourney();
-                Match match = new Match(
+                MatchDTO matchDTO = new MatchDTO(
                         statisticsList.get(i).getTourneyId(),
                         tourney.getTourneyName(),
                         tourney.getSurface(),
                         tourney.getDraw_size(),
                         tourney.getLevel(),
-                        tourney.getTourney_date(),
+                        tourney.getTourneyDate(),
                         statisticsList.get(i).getMatchNum(),
                         statisticsList.get(i).getWinner_id(),
                         statisticsList.get(i).getWinner_seed(),
@@ -290,52 +290,44 @@ public class CommonService {
                         statisticsList.get(i).getLoser_rank(),
                         statisticsList.get(i).getLoser_rank_points()
                 );
-                matchList.add(match);
+                matchDTOList.add(matchDTO);
             }
         }
 
-        return matchList;
+        return matchDTOList;
     }
 
     public List<RankingDTO> getDateRangeRanking(String date_start,String date_end) throws ParseException {
-        List<Ranking> allRankings = (List<Ranking>) rankingRepository.findAll();
-        List<Ranking> rangeRankings = new ArrayList<>();
+        List<Ranking> allRankings = rankingRepository.findByRankingDateBetweenOrderByRankingDateDesc(date_start,date_end);
         List<RankingDTO> rangeRankingsDTO = new ArrayList<>();
         if(!allRankings.isEmpty()){
             for(int i = 0; i < allRankings.size(); i++){
-                if( CommonHelper.compareTwoDate(date_start,date_end,allRankings.get(i).getRankingDate())){
-                    rangeRankings.add(allRankings.get(i));
-                }
-            }
-            if(!rangeRankings.isEmpty()){
-                for (int i = 0; i < rangeRankings.size(); i++){
-                    RankingDTO rankingDTO = new RankingDTO(
-                            rangeRankings.get(i).getRankingDate(),
-                            rangeRankings.get(i).getRank(),
-                            rangeRankings.get(i).getPlayer_id(),
-                            rangeRankings.get(i).getPoints()
-                    );
-                    rangeRankingsDTO.add(rankingDTO);
-                }
+                RankingDTO rankingDTO = new RankingDTO(
+                        allRankings.get(i).getRankingDate(),
+                        allRankings.get(i).getRank(),
+                        allRankings.get(i).getPlayer_id(),
+                        allRankings.get(i).getPoints()
+                );
+                rangeRankingsDTO.add(rankingDTO);
             }
         }
         return rangeRankingsDTO;
     }
 
-    public List<Match> getDateRangeMatch(String date_start,String date_end) {
+    public List<MatchDTO> getDateRangeMatch(String date_start, String date_end) {
         List<Statistics> allMatch = (List<Statistics>) statisticsRepository.findAll();
-        List<Match> rangeMatch = new ArrayList<>();
+        List<MatchDTO> rangeMatchDTOS = new ArrayList<>();
         if(!allMatch.isEmpty()){
             for(int i = 0; i < allMatch.size(); i++){
-                if( CommonHelper.compareTwoDate(date_start,date_end,allMatch.get(i).getTourney().getTourney_date())){
+                if( CommonHelper.compareTwoDate(date_start,date_end,allMatch.get(i).getTourney().getTourneyDate())){
                     Tourney tourney = allMatch.get(i).getTourney();
-                    Match match = new Match(
+                    MatchDTO matchDTO = new MatchDTO(
                             allMatch.get(i).getTourneyId(),
                             tourney.getTourneyName(),
                             tourney.getSurface(),
                             tourney.getDraw_size(),
                             tourney.getLevel(),
-                            tourney.getTourney_date(),
+                            tourney.getTourneyDate(),
                             allMatch.get(i).getMatchNum(),
                             allMatch.get(i).getWinner_id(),
                             allMatch.get(i).getWinner_seed(),
@@ -380,68 +372,54 @@ public class CommonService {
                             allMatch.get(i).getLoser_rank(),
                             allMatch.get(i).getLoser_rank_points()
                     );
-                    rangeMatch.add(match);
+                    rangeMatchDTOS.add(matchDTO);
                 }
             }
         }
-        return rangeMatch;
+        return rangeMatchDTOS;
     }
 
     public List<TourneyDTO> getDateRangeTourney(String date_start,String date_end) throws ParseException {
-        List<Tourney> allTourney = (List<Tourney>) tourneyRepository.findAll();
-        List<Tourney> rangeTourney = new ArrayList<>();
+        List<Tourney> allTourney =  tourneyRepository.findByTourneyDateBetweenOrderByTourneyDateDesc(date_start,date_end);
+
         List<TourneyDTO> rangeTourneysDTO = new ArrayList<>();
 
         if(!allTourney.isEmpty()){
             for(int i = 0; i < allTourney.size(); i++){
-                if( CommonHelper.compareTwoDate(date_start,date_end,allTourney.get(i).getTourney_date())){
-                    rangeTourney.add(allTourney.get(i));
-                }
-            }
-            if(!rangeTourney.isEmpty()){
-                for (int i = 0; i < rangeTourney.size(); i++){
-                    TourneyDTO tourneyDTO = new TourneyDTO(
-                            rangeTourney.get(i).getTourney_id(),
-                            rangeTourney.get(i).getTourneyName(),
-                            rangeTourney.get(i).getTourney_date(),
-                            rangeTourney.get(i).getDraw_size(),
-                            rangeTourney.get(i).getLevel(),
-                            rangeTourney.get(i).getSurface(),
-                            rangeTourney.get(i).getWinnerName(),
-                            rangeTourney.get(i).getLoserName(),
-                            rangeTourney.get(i).getMatch_num()
-                    );
+                TourneyDTO tourneyDTO = new TourneyDTO(
+                        allTourney.get(i).getTourney_id(),
+                        allTourney.get(i).getTourneyName(),
+                        allTourney.get(i).getTourneyDate(),
+                        allTourney.get(i).getDraw_size(),
+                        allTourney.get(i).getLevel(),
+                        allTourney.get(i).getSurface(),
+                        allTourney.get(i).getWinnerName(),
+                        allTourney.get(i).getLoserName(),
+                        allTourney.get(i).getMatch_num()
+                );
 
-                    rangeTourneysDTO.add(tourneyDTO);
-                }
-
+                rangeTourneysDTO.add(tourneyDTO);
             }
         }
         return rangeTourneysDTO;
     }
 
     public List<PlayerDTO> getDateBirthRangePlayer(String date_start,String date_end) throws ParseException {
-        List<Player> allPlayer = (List<Player>) playerRepository.findAll();
-        List<Player> rangePlayer = new ArrayList<>();
+        List<Player> allPlayer =  playerRepository.findByBirthDateBetweenOrderByBirthDateDesc(date_start,date_end);
+
         List<PlayerDTO> rangePlayersDTO = new ArrayList<>();
         if(!allPlayer.isEmpty()){
             for(int i = 0; i < allPlayer.size(); i++){
-                if( CommonHelper.compareTwoDate(date_start,date_end,allPlayer.get(i).getBirth_date())){
-                    rangePlayer.add(allPlayer.get(i));
-                }
+                PlayerDTO playerDTO = new PlayerDTO(
+                        allPlayer.get(i).getPlayerId(),
+                        allPlayer.get(i).getPlayerName(),
+                        allPlayer.get(i).getHand(),
+                        allPlayer.get(i).getBirthDate(),
+                        allPlayer.get(i).getCountry_code()
+                );
+                rangePlayersDTO.add(playerDTO);
             }
-            if(!rangePlayer.isEmpty()){
-                for (int i = 0; i < rangePlayer.size(); i++){
-                    PlayerDTO playerDTO = new PlayerDTO(
-                            rangePlayer.get(i).getPlayerId(),
-                            rangePlayer.get(i).getPlayerName(),
-                            rangePlayer.get(i).getHand(),
-                            rangePlayer.get(i).getBirth_date(),
-                            rangePlayer.get(i).getCountry_code()
-                    );
-                    rangePlayersDTO.add(playerDTO);
-                }
-            }
+
         }
         return rangePlayersDTO;
     }

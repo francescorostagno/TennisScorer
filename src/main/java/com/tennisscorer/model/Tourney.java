@@ -18,7 +18,7 @@ public class Tourney implements Serializable {
     private String tourneyName;
 
     @Column(name = "`tourney_date`")
-    private String tourney_date;
+    private String tourneyDate;
 
     @Column(name = "`draw_size`")
     private Long draw_size;
@@ -76,12 +76,12 @@ public class Tourney implements Serializable {
         this.tourneyName = tourney_name;
     }
 
-    public String getTourney_date() {
-        return tourney_date;
+    public String getTourneyDate() {
+        return tourneyDate;
     }
 
-    public void setTourney_date(String tourney_date) {
-        this.tourney_date = tourney_date;
+    public void setTourneyDate(String tourney_date) {
+        this.tourneyDate = tourney_date;
     }
 
     public Long getDraw_size() {
@@ -148,10 +148,10 @@ public class Tourney implements Serializable {
         this.loserPlayer = loserPlayer;
     }
 
-    public Tourney(String tourney_id, String tourney_name, String tourney_date, Long draw_size, String level, String surface, String winnerName, String loserName, Long match_num){
+    public Tourney(String tourney_id, String tourney_name, String tourneyDate, Long draw_size, String level, String surface, String winnerName, String loserName, Long match_num){
         this.tourneyId = tourney_id;
         this.tourneyName = tourney_name;
-        this.tourney_date = tourney_date;
+        this.tourneyDate = tourneyDate;
         this.draw_size = draw_size;
         this.level = level;
         this.surface = surface;

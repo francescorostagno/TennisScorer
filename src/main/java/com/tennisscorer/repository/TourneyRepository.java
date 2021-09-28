@@ -11,5 +11,5 @@ public interface TourneyRepository extends CrudRepository<Tourney, Long> {
     Tourney findTourneyByTourneyId(String tourney_id);
     List<Tourney> findAllByTourneyName(String tourney_name);
     List<Tourney> findAllByWinnerPlayer(Player winnerPlayer);
-
+    List<Tourney> findByTourneyDateBetweenOrderByTourneyDateDesc(String date_start,String date_end);
 }

@@ -11,5 +11,5 @@ public interface RankingRepository extends CrudRepository<Ranking,Long> {
     Boolean existsByPlayerIdAndRankingDate(Long player_id, String ranking_date);
     List<Ranking> findAllByPlayerId(Long player_id);
     List<Ranking> findAllByRankingDate(String ranking_date);
-
+    List<Ranking> findByRankingDateBetweenOrderByRankingDateDesc(String date_start,String date_end);
 }

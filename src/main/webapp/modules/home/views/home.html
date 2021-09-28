@@ -1,28 +1,42 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar  navbar-dark bg-primary">
     <span class="navbar-brand mb-0 h1">HOME</span>
     <span class="navbar-brand mb-0 ">You're logged in!!  {{ username }}</span>
     <span class="navbar-brand mb-0 ">Your role is : {{ role}}</span>
     <a class="navbar-brand" href="#/login">Logout</a></a>
 </nav>
 <br>
-<div ng-controller = "HomeController" ng-hide="role == 'user'">
-    <h2>Create User:</h2>
-    <label for="newUsername" >Username: </label>
-    <input type="text" id="newUsername" ng-model="newUsername" />
-    <label for="newPassword" >Password: </label>
-    <input type="password" id="newPassword" ng-model="newPassword" />
-    <label for="newEmail" >Email: </label>
-    <input type="email" id="newEmail" ng-model="newEmail" />
-    <button ng-click = "createUser()">Create User</button>
+<div>
+    <img id="image_logo" class="image_logo" src="image/atp.png">
 </div>
-<br>
-<br>
-<div ng-controller = "HomeController" ng-hide="role == 'user'">
-    <input type = "file" file-model = "myFile"/>
-    <button ng-click = "uploadFile()">upload me</button>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div ng-controller = "HomeController" ng-hide="role == 'user'">
+                <h2>Create User:</h2>
+                <div  style="margin: 5px">
+                    <label for="newUsername" >Username: </label>
+                    <input type="text" id="newUsername" ng-model="newUsername" />
+                </div>
+                <div  style="margin: 5px">
+                    <label for="newPassword" >Password: </label>
+                    <input type="password" id="newPassword" ng-model="newPassword" />
+                </div>
+                <div style="margin: 5px">
+                    <label for="newEmail" >Email: </label>
+                    <input type="email" id="newEmail" ng-model="newEmail" />
+                </div>
+                <button ng-click="createUser()" type="button" class="btn btn-primary" style="margin: 10px">Create User</button>
+            </div>
+        </div>
+        <div class="col">
+            <div ng-controller = "HomeController" ng-hide="role == 'user'">
+                <h2>Upload New File: </h2>
+                <input type = "file" file-model = "myFile"  ng-click = "uploadFile()" class="custom-file-input"/>
+            </div>
+        </div>
+    </div>
 </div>
-<br>
-<br>
+
 <div>
     <h2>Search</h2>
     <label>
@@ -36,7 +50,7 @@
 </div>
 
 <br>
-<div  ng-controller="HomeController" class="searchType hide" id="playerName">
+<div ng-controller="HomeController" class="searchType hide" id="playerName">
     <form ng-submit="submitPlayer()" >
         <label for="playerNameLabel" >Player Name: </label>
         <input type="text" id="playerNameLabel" ng-model="playerName" />
@@ -55,7 +69,7 @@
             <tr>
                 <td>{{player.player}}</td>
                 <td>{{player.hand}}</td>
-                <td>{{player.birthDate}}</td>
+                <td>{{player.birthDate | date: "MM/dd/yyyy"}}</td>
                 <td>{{player.countryCode}}</td>
             </tr>
             </tbody>
@@ -84,13 +98,12 @@
                     {{ t.loserName}}
                 </td>
                 <td>
-                    {{ t.tourneyDate}}
+                    {{ t.tourneyDate | date: "MM/dd/yyyy"}}
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
 </div>
 <div ng-controller="HomeController" class="searchType hide" id="goldenRegister">
     <form ng-submit="submitGoldenRegister()" >
@@ -114,7 +127,7 @@
                     {{ g.loserName}}
                 </td>
                 <td>
-                    {{ g.tourneyDate}}
+                    {{  g.tourneyDate | date: "MM/dd/yyyy"}}
                 </td>
                 <td>
                     {{ g.surface}}
@@ -155,7 +168,7 @@
                     {{ tm.matchNum}}
                 </td>
                 <td>
-                    {{ tm.matchDate}}
+                    {{ tm.matchDate | date: "MM/dd/yyyy"}}
                 </td>
                 <td>
                     <ul  class="overflow-auto" ng-repeat=" (key, value)  in tm.matchStatistics">
@@ -168,7 +181,6 @@
     </div>
 
 </div>
-
 <div ng-controller="HomeController" class="searchType hide" id="rankingPlayer">
     <form ng-submit="submitPlayerRanking()" >
         <label for="rankingPlayerLabel" >Player Name: </label>
@@ -190,7 +202,7 @@
                     {{ pr.points}}
                 </td>
                 <td>
-                    {{ pr.rankingDate}}
+                    {{ pr.rankingDate | date: "MM/dd/yyyy"}}
                 </td>
             </tr>
             </tbody>
@@ -198,14 +210,13 @@
     </div>
 
 </div>
-
 <div ng-controller="HomeController" class="searchType hide" id="dateRangeTourney">
     <form ng-submit="submitDateRangeTourney()" >
         <label for="dateStartRangeTourneyLabel" >Date Start: </label>
         <input type="text" id="dateStartRangeTourneyLabel" ng-model="dateStartRangeTourney" />
-        <label for="dateEndRangeTourneyLabel" >Player Name: </label>
+        <label for="dateEndRangeTourneyLabel" >Date End: </label>
         <input type="text" id="dateEndRangeTourneyLabel" ng-model="dateEndRangeTourney" />
-        <button ng-submit="submit"></button>
+        <input type="submit" value="Submit"/>
     </form>
     <div ng-show="dateRangeTourneyArray.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar" >
         <table class="table table-bordered table-striped mb-0" id="dateRangeTourneyTable" >
@@ -229,13 +240,50 @@
                     {{ drt.loserName}}
                 </td>
                 <td>
-                    {{ drt.tourneyDate}}
+                    {{ drt.tourneyDate | date: "MM/dd/yyyy"}}
                 </td>
                 <td>
                     {{ drt.surface}}
                 </td>
                 <td>
                     {{ drt.level}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div ng-controller="HomeController" class="searchType hide" id="dateBirthRangePlayer">
+    <form ng-submit="submitDateBirthRangePlayer()" >
+        <label for="dateStartRangePlayerLabel" >Date Start: </label>
+        <input type="text" id="dateStartRangePlayerLabel" ng-model="dateStartRangeBirthPlayer" />
+        <label for="dateEndRangePlayerLabel" >Date End: </label>
+        <input type="text" id="dateEndRangePlayerLabel" ng-model="dateEndRangeBirthPlayer" />
+        <input type="submit" value="Submit"/>
+    </form>
+    <div ng-show="playerDateBirthRange.length > 0" class="table-wrapper-scroll-y my-custom-scrollbar" >
+        <table class="table table-bordered table-striped mb-0" id="dateRangePlayerTable" >
+            <thead>
+            <tr>
+                <th class="th-sm">Player Name: </th>
+                <th class="th-sm">Hand: </th>
+                <th class="th-sm">Country Code: </th>
+                <th class="th-sm">Birthday: </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat=" pdbr in playerDateBirthRange">
+            <tr>
+                <td>{{ pdbr.playerName}}</td>
+                <td>
+                    {{ pdbr.hand}}
+                </td>
+                <td>
+                    {{ pdbr.countryCode}}
+                </td>
+                <td>
+                    {{ pdbr.birthDate | date: "MM/dd/yyyy"}}
                 </td>
             </tr>
             </tbody>

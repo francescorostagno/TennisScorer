@@ -27,7 +27,7 @@ public class Player implements Serializable {
     private String hand;
 
     @Column(name =  "`birth_date`")
-    private String birth_date;
+    private String birthDate;
 
     @Column(name =  "`country_code`")
     private String country_code;
@@ -44,11 +44,11 @@ public class Player implements Serializable {
     @JoinColumn( name = "`player_id`", referencedColumnName = "`player_id`", nullable = false, insertable = false, updatable = false)
     private List<Ranking> rankings;
 
-    public Player( Long playerId, String player_name, String hand, String birth_date, String country_code){
+    public Player(Long playerId, String player_name, String hand, String birthDate, String country_code){
         this.playerId = playerId;
         this.playerName = player_name;
         this.hand = hand;
-        this.birth_date = birth_date;
+        this.birthDate = birthDate;
         this.country_code = country_code;
     }
 
@@ -80,12 +80,12 @@ public class Player implements Serializable {
         this.hand = hand;
     }
 
-    public String getBirth_date() {
-        return birth_date;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(String birth_date) {
-        this.birth_date = birth_date;
+    public void setBirthDate(String birth_date) {
+        this.birthDate = birth_date;
     }
 
     public String getCountry_code() {

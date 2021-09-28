@@ -92,7 +92,7 @@ angular.module('Home')
 
         $scope.submitDateBirthRangePlayer = function (){
             var uploadUrl = 'api/common/get_date_birth_range_player';
-            $scope.submitDateBirthRangePlayerToUrl($scope.dateStartRangeBirthPlayer,$scope.dateStartRangeBirthPlayer,uploadUrl);
+            $scope.submitDateBirthRangePlayerToUrl($scope.dateStartRangeBirthPlayer,$scope.dateEndRangeBirthPlayer,uploadUrl);
         }
 
         $scope.createUserToUrl = function (username,password,email,uploadUrl){
@@ -114,15 +114,15 @@ angular.module('Home')
         }
 
         $scope.submitDateRangeTourneyToUrl = function (dateStart,dateEnd,uploadUrl){
-            var data = new FormData();
-            data.append('date_start', dateStart);
-            data.append('date_start', dateEnd);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                   date_start: dateStart,
+                   date_end: dateEnd
+                }
+            }).then(function(response){
                 if( response.status === 200){
                     $scope.dateRangeTourneyArray = [];
                     if(response.data){
@@ -130,9 +130,12 @@ angular.module('Home')
                             var yy = response.data[i].tourney_date.slice(0,4);
                             var mm = response.data[i].tourney_date.slice(5,6);
                             var dd = response.data[i].tourney_date.slice(7,8);
+
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
+
                             var tourney = {
                                 'tourneyName' : response.data[i].tourneyName,
-                                'tourneyData': dd + ':' + mm + ':' + yy,
+                                'tourneyDate': date,
                                 'winnerName' : response.data[i].winnerName,
                                 'loserName' : response.data[i].loserName,
                                 'surface': response.data[i].surface,
@@ -143,23 +146,50 @@ angular.module('Home')
                     }
                 }
             })
+
         }
 
         $scope.submitDateBirthRangePlayerToUrl = function (dateStart,dateEnd,uploadUrl){
-            var data = new FormData();
-            data.append('date_start', dateStart);
-            data.append('date_start', dateEnd);
+
+            $http({
+                url:uploadUrl,
+                method:'GET',
+                params: {
+                    date_start: dateStart,
+                    date_end: dateEnd
+                }
+            }).then(function (response){
+                if(response.status === 200){
+                    $scope.playerDateBirthRange = [];
+                    if(response.data){
+                        for(var i = 0; i < response.data.length; i++){
+                            var yy = response.data[i].birth_date.slice(0,4);
+                            var mm = response.data[i].birth_date.slice(5,6);
+                            var dd = response.data[i].birth_date.slice(7,8);
+
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
+                            var player = {
+                                'playerName': response.data[i].playerName,
+                                'birthDate' :date,
+                                'hand' : response.data[i].hand,
+                                'countryCode' : response.data[i].country_code
+                            }
+                            $scope.playerDateBirthRange.push(player);
+                        }
+                    }
+                }
+            })
         }
 
         $scope.submitPlayerRankingToUrl = function (playerNameRanking,uploadUrl){
-            var data = new FormData();
-            data.append('player_name', playerNameRanking);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                    player_name: playerNameRanking
+                }
+            }).then(function (response){
                 if( response.status === 200){
                     $scope.playerRankingsArray = [];
                     if(response.data){
@@ -169,8 +199,9 @@ angular.module('Home')
                             var mm = response.data[i].rankingDate.slice(5,6);
                             var dd = response.data[i].rankingDate.slice(7,8);
 
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
                             var ranking = {
-                                'rankingDate' : dd + ':' + mm + ':' + yy,
+                                'rankingDate' :date,
                                 'rank' : response.data[i].rank,
                                 'points' : response.data[i].points
                             }
@@ -180,17 +211,18 @@ angular.module('Home')
 
                 }
             })
+
         }
 
         $scope.submitTourneyMatchToUrl = function (tourneyMatchId,uploadUrl){
-            var data = new FormData();
-            data.append('tourney_id', tourneyMatchId);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                    tourney_id: tourneyMatchId
+                }
+            }).then(function (response){
                 if( response.status === 200){
                     $scope.tourneyMatchsArray = [];
                     if(response.data){
@@ -199,14 +231,14 @@ angular.module('Home')
                             var yy = response.data[i].match_date.slice(0,4);
                             var mm = response.data[i].match_date.slice(5,6);
                             var dd = response.data[i].match_date.slice(7,8);
-
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
                             var match = {
-                                'winnerPlayer' : response.data[i].winnerPlayer.playerName,
-                                'loserPlayer' : response.data[i].loserPlayer.playerName,
+                                'winnerPlayer' : response.data[i].winnerPlayer,
+                                'loserPlayer' : response.data[i].loserPlayer,
                                 'score' : response.data[i].score,
                                 'matchStatistics' : response.data[i].matchStatistics,
                                 'matchNum' : response.data[i].match_num,
-                                'matchDate' : dd + ':' + mm + ':' + yy
+                                'matchDate' : date
                             }
                             $scope.tourneyMatchsArray.push(match);
                         }
@@ -217,39 +249,42 @@ angular.module('Home')
         }
 
         $scope.submitPlayerToUrl = function (playerName,uploadUrl){
-            var data = new FormData();
-            data.append('player_name', playerName);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                    player_name: playerName
+                }
+            }).then(function (response){
                 if( response.status === 200){
 
                     var yy = response.data.birth_date.slice(0,4);
                     var mm = response.data.birth_date.slice(5,6);
                     var dd = response.data.birth_date.slice(7,8);
+
+                    var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
+
                     $scope.player = {
                         'player' :  response.data.playerName,
                         'hand' :  response.data.hand,
-                        'birthDate': dd + ':' + mm + ':' + yy,
+                        'birthDate': date,
                         'countryCode': response.data.country_code
                     };
                 }
             })
+
         }
 
         $scope.submitTourneyToUrl = function (tourneyName, uploadUrl){
 
-            var data = new FormData();
-            data.append('tourney_name', tourneyName);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                    tourney_name: tourneyName
+                }
+            }).then(function (response){
                 if( response.status === 200){
                     $scope.tourney = [];
                     if(response.data){
@@ -258,11 +293,11 @@ angular.module('Home')
                             var yy = response.data[i].tourney_date.slice(0,4);
                             var mm = response.data[i].tourney_date.slice(5,6);
                             var dd = response.data[i].tourney_date.slice(7,8);
-
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
                             var edition = {
                                 'winnerName' : response.data[i].winnerName,
                                 'loserName' : response.data[i].loserName,
-                                'tourneyDate' : dd + ':' + mm + ':' + yy
+                                'tourneyDate' : date
                             }
                             $scope.tourney.push(edition)
                         }
@@ -275,12 +310,14 @@ angular.module('Home')
         $scope.submitGoldenRegisterToUrl = function (tourneyName, uploadUrl){
             var data = new FormData();
             data.append('tourney_name', tourneyName);
-            $http.post(uploadUrl,data,{
-                withCredentials : false,
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
-                }}).then(function (response){
+
+            $http({
+                url: uploadUrl,
+                method: 'GET',
+                params: {
+                    tourney_name: tourneyName
+                }
+            }).then(function (response){
                 if( response.status === 200){
                     $scope.goldenRegisterArray = [];
                     if(response.data){
@@ -289,11 +326,11 @@ angular.module('Home')
                             var yy = response.data[i].tourney_date.slice(0,4);
                             var mm = response.data[i].tourney_date.slice(5,6);
                             var dd = response.data[i].tourney_date.slice(7,8);
-
+                            var date = new Date(parseInt(yy),parseInt(mm),parseInt(dd));
                             var edition = {
                                 'winnerName' : response.data[i].winner_name,
                                 'loserName' : response.data[i].loser_name,
-                                'tourneyDate' : dd + ':' + mm + ':' + yy,
+                                'tourneyDate' : date,
                                 'surface' : response.data[i].surface
                             }
                             $scope.goldenRegisterArray.push(edition)

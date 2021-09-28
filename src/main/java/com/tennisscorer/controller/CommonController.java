@@ -17,7 +17,7 @@ public class CommonController {
     @Autowired
     CommonService commonService;
 
-    @PostMapping("/all_tourney")
+    @GetMapping("/all_tourney")
     public ResponseEntity<List<TourneyDTO>> getTourneyTennisMatch(){
         try {
             List<TourneyDTO> tourneys = commonService.getAllTourney();
@@ -31,17 +31,17 @@ public class CommonController {
     }
 
 
-    @PostMapping("/match_statistics")
-    public ResponseEntity<MatchStatistics> getMatchStatistics(@RequestParam("tourney_id") String tourney_id, @RequestParam("match_num") Integer match_num){
+    @GetMapping("/match_statistics")
+    public ResponseEntity<MatchStatisticsDTO> getMatchStatistics(@RequestParam("tourney_id") String tourney_id, @RequestParam("match_num") Integer match_num){
         try {
             if(tourney_id.equals("") || match_num.equals(0) ){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else{
-                MatchStatistics matchStatistics = commonService.getMatchStatistics(tourney_id,match_num );
-                if(matchStatistics == null){
+                MatchStatisticsDTO matchStatisticsDTO = commonService.getMatchStatistics(tourney_id,match_num );
+                if(matchStatisticsDTO == null){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(matchStatistics, HttpStatus.OK);
+                return new ResponseEntity<>(matchStatisticsDTO, HttpStatus.OK);
             }
 
         }catch (Exception e) {
@@ -49,20 +49,20 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/match")
-    public ResponseEntity<List<Match>> getAllMatch(){
+    @GetMapping("/match")
+    public ResponseEntity<List<MatchDTO>> getAllMatch(){
         try {
-            List<Match> tennisMatches = commonService.getAllMatch();
-            if(tennisMatches.isEmpty()){
+            List<MatchDTO> tennisMatchDTOS = commonService.getAllMatch();
+            if(tennisMatchDTOS.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(tennisMatches, HttpStatus.OK);
+            return new ResponseEntity<>(tennisMatchDTOS, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/player_ranking")
+    @GetMapping("/player_ranking")
     public ResponseEntity<List<RankingDTO>> getPlayerRanking(@RequestParam("player_name") String player_name){
         try {
             if(player_name.equals("")){
@@ -79,41 +79,41 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/player_match")
-    public ResponseEntity<List<PlayerMatch>> getPlayerMatch(@RequestParam("player_name") String player_name){
+    @GetMapping("/player_match")
+    public ResponseEntity<List<PlayerMatchDTO>> getPlayerMatch(@RequestParam("player_name") String player_name){
         try {
             if(player_name.equals("")){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else {
-                List<PlayerMatch> playerMatches = commonService.getPlayerMatch(player_name);
-                if(playerMatches.isEmpty()){
+                List<PlayerMatchDTO> playerMatchDTOS = commonService.getPlayerMatch(player_name);
+                if(playerMatchDTOS.isEmpty()){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(playerMatches, HttpStatus.OK);
+                return new ResponseEntity<>(playerMatchDTOS, HttpStatus.OK);
             }
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/golden_register")
-    public ResponseEntity<List<GoldenRegister>> getGoldenRegister(@RequestParam("tourney_name") String tourney_name){
+    @GetMapping("/golden_register")
+    public ResponseEntity<List<GoldenRegisterDTO>> getGoldenRegister(@RequestParam("tourney_name") String tourney_name){
         try {
             if( tourney_name.equals("")){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else{
-                List<GoldenRegister> goldenRegisters = commonService.getTourneyGoldenRegister(tourney_name);
-                if(goldenRegisters.isEmpty()){
+                List<GoldenRegisterDTO> goldenRegisterDTOS = commonService.getTourneyGoldenRegister(tourney_name);
+                if(goldenRegisterDTOS.isEmpty()){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(goldenRegisters, HttpStatus.OK);
+                return new ResponseEntity<>(goldenRegisterDTOS, HttpStatus.OK);
             }
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/tourney")
+    @GetMapping("/tourney")
     public ResponseEntity<List<TourneyDTO>> getTourneyByName(@RequestParam("tourney_name") String tourney_name){
         try {
             if(tourney_name.equals("")){
@@ -133,7 +133,7 @@ public class CommonController {
 
 
 
-    @PostMapping("/player")
+    @GetMapping("/player")
     public ResponseEntity<PlayerDTO> getPlayerByName(@RequestParam("player_name") String player_name){
         try {
             if(player_name.equals("")) {
@@ -150,7 +150,7 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/player_winner_tourneys")
+    @GetMapping("/player_winner_tourneys")
     public ResponseEntity<List<TourneyDTO>> getAllPlayerWinnerTourney(@RequestParam("player_name") String player_name){
         try{
             if(player_name.equals("")){
@@ -167,17 +167,17 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/tourney_match")
-    public ResponseEntity<List<TourneyMatch>> getAllTourneyMatch(@RequestParam("tourney_id") String tourney_id){
+    @GetMapping("/tourney_match")
+    public ResponseEntity<List<TourneyMatchDTO>> getAllTourneyMatch(@RequestParam("tourney_id") String tourney_id){
         try {
             if(tourney_id.equals("")){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else{
-                List<TourneyMatch> tourneyMatches = commonService.getAllTourneyMatch(tourney_id);
-                if(tourneyMatches.isEmpty()){
+                List<TourneyMatchDTO> tourneyMatchDTOS = commonService.getAllTourneyMatch(tourney_id);
+                if(tourneyMatchDTOS.isEmpty()){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(tourneyMatches,HttpStatus.OK);
+                return new ResponseEntity<>(tourneyMatchDTOS,HttpStatus.OK);
             }
 
         }catch (Exception e){
@@ -185,7 +185,7 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/autocomplete_player")
+    @GetMapping("/autocomplete_player")
     public ResponseEntity<List<String>> autocompletePlayer(@RequestParam("term") String term){
         try{
             List<String> terms = commonService.autocompletePlayer(term);
@@ -195,7 +195,7 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/get_date_range_ranking")
+    @GetMapping("/get_date_range_ranking")
     public ResponseEntity<List<RankingDTO>> getDateRangeRanking(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
         try {
             if(date_start.equals("") || date_end.equals("")){
@@ -213,17 +213,17 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/get_date_range_match")
-    public ResponseEntity<List<Match>> getDateRangeMatch(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
+    @GetMapping("/get_date_range_match")
+    public ResponseEntity<List<MatchDTO>> getDateRangeMatch(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
         try {
             if(date_start.equals("") || date_end.equals("")){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else {
-                List<Match> matches = commonService.getDateRangeMatch(date_start,date_end);
-                if(matches.isEmpty()){
+                List<MatchDTO> matchDTOS = commonService.getDateRangeMatch(date_start,date_end);
+                if(matchDTOS.isEmpty()){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(matches, HttpStatus.OK);
+                return new ResponseEntity<>(matchDTOS, HttpStatus.OK);
             }
 
         }catch (Exception e){
@@ -231,7 +231,7 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/get_date_range_tourney")
+    @GetMapping("/get_date_range_tourney")
     public ResponseEntity<List<TourneyDTO>> getDateRangeTourney(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
         try {
             if(date_start.equals("") || date_end.equals("")){
@@ -249,7 +249,7 @@ public class CommonController {
         }
     }
 
-    @PostMapping("/get_date_birth_range_player")
+    @GetMapping("/get_date_birth_range_player")
     public ResponseEntity<List<PlayerDTO>> getDateBirthRangePlayer(@RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end){
         try {
             if(date_start.equals("") || date_end.equals("")){

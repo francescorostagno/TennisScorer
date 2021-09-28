@@ -195,7 +195,7 @@ public class CSVHelper {
                         tennisMatch.getTourney().getSurface(),
                         String.valueOf(tennisMatch.getTourney().getDraw_size()),
                         tennisMatch.getTourney().getLevel(),
-                        tennisMatch.getTourney().getTourney_date(),
+                        tennisMatch.getTourney().getTourneyDate(),
                         String.valueOf(tennisMatch.getMatchNum()),
                         String.valueOf(tennisMatch.getWinner_id()),
                         String.valueOf(tennisMatch.getWinner_seed()),

@@ -1,30 +1,28 @@
 package com.tennisscorer.dto;
 
-import com.tennisscorer.model.Player;
-
-public class TourneyMatch {
+public class TourneyMatchDTO {
 
     public String winnerPlayer;
     public String loserPlayer;
     public String score;
     public Integer match_num;
-    public MatchStatistics matchStatistics;
+    public MatchStatisticsDTO matchStatisticsDTO;
 
-    public TourneyMatch(String winnerPlayer, String loserPlayer, String score, Integer match_num, MatchStatistics matchStatistics, String match_date) {
+    public TourneyMatchDTO(String winnerPlayer, String loserPlayer, String score, Integer match_num, MatchStatisticsDTO matchStatisticsDTO, String match_date) {
         this.winnerPlayer = winnerPlayer;
         this.loserPlayer = loserPlayer;
         this.score = score;
         this.match_num = match_num;
-        this.matchStatistics = matchStatistics;
+        this.matchStatisticsDTO = matchStatisticsDTO;
         this.match_date = match_date;
     }
 
-    public MatchStatistics getMatchStatistics() {
-        return matchStatistics;
+    public MatchStatisticsDTO getMatchStatistics() {
+        return matchStatisticsDTO;
     }
 
-    public void setMatchStatistics(MatchStatistics matchStatistics) {
-        this.matchStatistics = matchStatistics;
+    public void setMatchStatistics(MatchStatisticsDTO matchStatisticsDTO) {
+        this.matchStatisticsDTO = matchStatisticsDTO;
     }
     public String getWinnerPlayer() {
         return winnerPlayer;
