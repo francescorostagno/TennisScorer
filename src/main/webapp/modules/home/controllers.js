@@ -3,12 +3,13 @@
 angular.module('Home')
  
 .controller('HomeController',
-    ['$scope','$rootScope', '$location', 'AuthenticationService','fileUpload','$http',
-    function ($scope, $rootScope, $location, AuthenticationService,fileUpload,$http) {
+    ['$scope','$rootScope', '$location', 'AuthenticationService','fileUpload','$http',"$window",
+    function ($scope, $rootScope, $location, AuthenticationService,fileUpload,$http,$window) {
         $scope.username = $rootScope.globals.currentUser.username;
         $scope.role = $rootScope.globals.currentUser.role;
         $scope.enabled = $rootScope.globals.currentUser.enabled;
         $scope.player = null;
+        $scope.errorMessage = null;
 
         $scope.searchValue =[
             {
@@ -34,48 +35,42 @@ angular.module('Home')
 
         ]
 
+
         $scope.createUser = function (){
-            $scope.clearScope();
             var uploadUrl = "login/create_user";
             $scope.createUserToUrl($scope.newUsername,$scope.newPassword,$scope.newEmail,uploadUrl)
         }
 
         $scope.uploadFile = function() {
             var file = $scope.myFile;
-            console.log('file is ' );
-            console.dir(file);
             var uploadUrl = "/api/csv/upload";
             fileUpload.uploadFileToUrl(file, uploadUrl);
         };
 
-        $scope.clearScope = function (){
-            $scope.player = null;
-            $scope.tourney = [];
-            $scope.goldenRegisterArray = [];
-        }
+
 
         $scope.submitPlayer = function (){
-            $scope.clearScope();
+
             var uploadUrl = "api/common/player";
             $scope.submitPlayerToUrl($scope.playerName,uploadUrl)
 
         }
 
         $scope.submitTourney = function (){
-            $scope.clearScope();
+
             var uploadUrl = "api/common/tourney";
             $scope.submitTourneyToUrl($scope.tourneyName,uploadUrl);
 
         }
 
         $scope.submitGoldenRegister = function (){
-            $scope.clearScope();
             var uploadUrl = 'api/common/golden_register';
             $scope.submitGoldenRegisterToUrl($scope.goldenRegister,uploadUrl)
 
         }
 
         $scope.submitTourneyMatch = function (){
+
             var uploadUrl = 'api/common/tourney_match';
             $scope.submitTourneyMatchToUrl($scope.tourneyMatchId, uploadUrl)
         }
@@ -95,6 +90,23 @@ angular.module('Home')
             $scope.submitDateBirthRangePlayerToUrl($scope.dateStartRangeBirthPlayer,$scope.dateEndRangeBirthPlayer,uploadUrl);
         }
 
+        $scope.showError = function (status){
+            switch (status){
+                case 204:
+                    $scope.errorMessage = 'Nessuna Corrispondenza';
+                    $window.alert( $scope.errorMessage);
+                    break;
+                case 400:
+                    $scope.errorMessage = 'Errore Immissione Dati';
+                    $window.alert( $scope.errorMessage);
+                    break;
+                case 500:
+                    $scope.errorMessage = 'Errore Server Interno';
+                    $window.alert( $scope.errorMessage);
+                    break;
+            }
+        }
+
         $scope.createUserToUrl = function (username,password,email,uploadUrl){
             var data = new FormData();
             data.append('username', username);
@@ -108,7 +120,10 @@ angular.module('Home')
                     'Content-Type' : undefined
                 }}).then(function (response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $location.path('');
+                }else{
+                    $scope.showError(response.status);
                 }
             })
         }
@@ -124,6 +139,7 @@ angular.module('Home')
                 }
             }).then(function(response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.dateRangeTourneyArray = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
@@ -144,6 +160,8 @@ angular.module('Home')
                             $scope.dateRangeTourneyArray.push(tourney)
                         }
                     }
+                }else{
+                    $scope.showError(response.status);
                 }
             })
 
@@ -160,6 +178,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if(response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.playerDateBirthRange = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length; i++){
@@ -177,6 +196,8 @@ angular.module('Home')
                             $scope.playerDateBirthRange.push(player);
                         }
                     }
+                }else{
+                    $scope.showError(response.status);
                 }
             })
         }
@@ -191,6 +212,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.playerRankingsArray = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
@@ -209,6 +231,8 @@ angular.module('Home')
                         }
                     }
 
+                }else{
+                    $scope.showError(response.status);
                 }
             })
 
@@ -224,6 +248,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.tourneyMatchsArray = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
@@ -244,6 +269,8 @@ angular.module('Home')
                         }
                     }
 
+                }else{
+                    $scope.showError(response.status);
                 }
             })
         }
@@ -258,7 +285,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if( response.status === 200){
-
+                    $scope.errorMessage = null;
                     var yy = response.data.birth_date.slice(0,4);
                     var mm = response.data.birth_date.slice(5,6);
                     var dd = response.data.birth_date.slice(7,8);
@@ -271,6 +298,8 @@ angular.module('Home')
                         'birthDate': date,
                         'countryCode': response.data.country_code
                     };
+                }else{
+                    $scope.showError(response.status);
                 }
             })
 
@@ -286,6 +315,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.tourney = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
@@ -302,6 +332,8 @@ angular.module('Home')
                             $scope.tourney.push(edition)
                         }
                     }
+                }else {
+                    $scope.showError(response.status);
                 }
             })
 
@@ -319,6 +351,7 @@ angular.module('Home')
                 }
             }).then(function (response){
                 if( response.status === 200){
+                    $scope.errorMessage = null;
                     $scope.goldenRegisterArray = [];
                     if(response.data){
                         for(var i = 0; i < response.data.length ; i++){
@@ -336,6 +369,8 @@ angular.module('Home')
                             $scope.goldenRegisterArray.push(edition)
                         }
                     }
+                }else {
+                    $scope.showError(response.status);
                 }
             })
 
