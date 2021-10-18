@@ -267,6 +267,16 @@ angular.module('Home')
                             }
                             $scope.tourneyMatchsArray.push(match);
                         }
+                        $scope.tourneyMatchName = '';
+                        $http({
+                            url: 'api/common/tourney_id',
+                            method: 'GET',
+                            params: {
+                                tourney_id: tourneyMatchId
+                            }
+                        }).then(function (response){
+                            $scope.tourneyMatchName = response.data.tourneyName;
+                        });
                     }
 
                 }else{
@@ -340,8 +350,6 @@ angular.module('Home')
         }
 
         $scope.submitGoldenRegisterToUrl = function (tourneyName, uploadUrl){
-            var data = new FormData();
-            data.append('tourney_name', tourneyName);
 
             $http({
                 url: uploadUrl,

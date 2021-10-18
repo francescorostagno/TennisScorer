@@ -424,5 +424,23 @@ public class CommonService {
         return rangePlayersDTO;
     }
 
+    public TourneyDTO getTourneyById(String tourney_id){
+        Tourney tourney = tourneyRepository.findTourneyByTourneyId(tourney_id);
+        if(tourney != null){
+            return new TourneyDTO(
+                    tourney.getTourney_id(),
+                    tourney.getTourneyName(),
+                    tourney.getTourneyDate(),
+                    tourney.getDraw_size(),
+                    tourney.getLevel(),
+                    tourney.getSurface(),
+                    tourney.getWinnerName(),
+                    tourney.getLoserName(),
+                    tourney.getMatch_num()
+            );
+        }else {
+            return null;
+        }
 
+    }
 }
